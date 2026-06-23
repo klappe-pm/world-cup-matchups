@@ -73,52 +73,31 @@ section{margin-top:22px}
 .explainer b{color:var(--chalk)}
 .explainer .key{display:inline-block;background:var(--panel3);border:1px solid var(--line);border-radius:5px;padding:0 5px;font-weight:700;margin-right:2px}
 
-/* scenario cards */
-.scens{display:grid;gap:11px}
-.scen{background:var(--panel2);border:1px solid var(--line-soft);border-radius:12px;overflow:hidden}
-.scen-h{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:11px 13px;background:rgba(255,255,255,.03);border-bottom:1px solid var(--line-soft)}
-.scen-h .if{font-size:11px;letter-spacing:.13em;color:var(--dim);text-transform:uppercase;font-weight:600}
-.scen-h .fin{font-size:15.5px}.scen-h .fin .ta{color:var(--usa-ink);font-weight:700}.scen-h .fin .tb{color:var(--eng-ink);font-weight:700}
-.scen-h .pill{margin-left:auto}
-.roads{display:grid;gap:1px;background:var(--line-soft)}
-@media(min-width:560px){.roads{grid-template-columns:1fr 1fr}}
-.road{background:var(--panel2);padding:10px 12px}
-.road-t{font-size:12px;font-weight:700;margin-bottom:3px}
-.road.a .road-t{color:var(--usa-ink)} .road.b .road-t{color:var(--eng-ink)}
-.road-key{display:grid;grid-template-columns:46px 46px 1fr;gap:8px;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);padding:3px 0 5px;border-bottom:1px solid rgba(255,255,255,.05);margin-bottom:3px}
-.step{display:grid;grid-template-columns:46px 46px 1fr;align-items:center;gap:8px;padding:5px 0;font-size:14px;border-top:1px solid rgba(255,255,255,.04)}
-.step:first-of-type{border-top:0}
-.step .rd{font-size:10px;font-weight:700;text-align:center;padding:3px 0;border-radius:5px}
-.step.r32 .rd{background:transparent;color:var(--r32);border:1px solid var(--r32)}
-.step.r16 .rd{background:transparent;color:var(--r16);border:1px solid var(--r16)}
-.step.qf .rd{background:transparent;color:var(--qf);border:1px solid var(--qf)}
-.step.sf .rd{background:var(--sf);color:#2a1505}
-.step.fin .rd{background:var(--final);color:#2a2105}
-.step .mn{font-size:12px;color:var(--dim);font-weight:600}
-.step .op{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.step.meet{background:rgba(255,210,77,.12);margin:0 -12px;padding:7px 12px}
-.step.meet .op{color:var(--gold);font-weight:700}
-.never{padding:11px 13px;color:var(--dim);font-size:14px;background:var(--panel2);border:1px dashed var(--line-soft);border-radius:10px}
-
-/* anchor table */
-.atable{width:100%;border-collapse:collapse;font-size:15px;margin-top:4px}
-.atable th{font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--dim);font-weight:600;text-align:left;padding:7px 6px;border-bottom:1px solid var(--line)}
-.atable th.c{text-align:center}
-.atable td{padding:0;border-bottom:1px solid rgba(255,255,255,.05)}
-.atable td.tn{padding:8px 6px;font-size:15.5px}
-.acell{width:100%;border:0;background:transparent;color:var(--chalk);font-size:12px;font-weight:700;padding:10px 4px;cursor:pointer;text-align:center}
-.acell:active{background:rgba(255,255,255,.07)}
-.acell.r32{color:var(--r32)}.acell.r16{color:var(--r16)}.acell.qf{color:var(--qf)}.acell.sf{color:var(--sf)}.acell.final{color:var(--final)}
-.acell.self{color:var(--dim);cursor:default}
-.atable tr.anchorrow td{background:rgba(255,210,77,.06)}
+/* scenario route cards (see route-lane block below) */
+.scens{display:block}
 
 /* group standings */
 .groups{display:grid;grid-template-columns:1fr;gap:11px;margin-top:6px}
 @media(min-width:560px){.groups{grid-template-columns:1fr 1fr}}
 .gcard{background:var(--panel2);border:1px solid var(--line);border-radius:13px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.24)}
-.gcard h3{font-size:16.5px;font-weight:800;margin:0;padding:11px 13px;background:rgba(255,255,255,.06);border-bottom:1px solid var(--line-soft);display:flex;align-items:center;gap:7px}
+.gcard .gh,.gcard h3{font-size:16.5px;font-weight:800;margin:0;padding:11px 13px;background:rgba(255,255,255,.06);border-bottom:1px solid var(--line-soft);display:flex;align-items:center;gap:7px}
 .lock{font-size:10.5px;color:#2a2105;background:var(--gold);border-radius:5px;padding:2px 7px;font-weight:700;display:inline-flex;gap:3px;align-items:center}
 .complete{margin-left:auto;font-size:10.5px;color:var(--dim);font-weight:500}
+.gcard.relevant{border-color:var(--gold-deep);box-shadow:0 0 0 1px rgba(255,210,77,.14),0 4px 16px rgba(0,0,0,.24)}
+.gcard.relevant h3{background:rgba(255,210,77,.07)}
+.relnote{font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);font-weight:700}
+/* remaining groups collapse by default (section 14.2) */
+.gcard.collapsible>summary{cursor:pointer;list-style:none}
+.gcard.collapsible>summary::-webkit-details-marker{display:none}
+.gcard.collapsible>summary::after{content:'\25be';margin-left:9px;color:var(--dim);font-size:11px;transition:transform .12s}
+.gcard.collapsible[open]>summary::after{transform:rotate(180deg)}
+.gcard.collapsible:not([open]) .complete{margin-left:0}
+/* expanded-stats toggle */
+.gctrl{display:flex;justify-content:flex-end;padding:7px 12px 0}
+.stattoggle{background:var(--panel3);border:1px solid var(--line);color:var(--dim);border-radius:6px;font-size:11px;font-weight:600;font-family:var(--sans);padding:4px 9px;cursor:pointer;min-height:28px}
+.stattoggle:active{background:rgba(255,255,255,.07)}
+table.stand th.ext,table.stand td.ext{display:none}
+.gcard.expanded table.stand th.ext,.gcard.expanded table.stand td.ext{display:table-cell}
 table.stand{width:100%;border-collapse:collapse;font-size:13.75px}
 table.stand th{font-size:10.5px;color:var(--dim);text-transform:uppercase;font-weight:600;padding:6px 3px;text-align:center;border-bottom:1px solid var(--line-soft)}
 table.stand th.tn{text-align:left;padding-left:11px}
@@ -129,7 +108,7 @@ table.stand tr.p1 td{background:rgba(54,217,143,.12)}table.stand tr.p2 td{backgr
 table.stand tr.p3 td{background:rgba(255,210,77,.06)}table.stand tr.p4 td{opacity:.6}
 table.stand tr.locked td{background:rgba(255,210,77,.14)!important;box-shadow:inset 0 0 0 1px rgba(255,210,77,.3)}
 table.stand tr.locked td.pts{color:var(--gold)}
-.posn{color:var(--dim);font-size:12px;font-weight:600}.lkmini{color:#2a2105;background:var(--gold);border-radius:3px;font-size:10px;padding:0 4px;margin-left:4px;font-weight:700}
+.posn{color:var(--dim);font-size:12px;font-weight:600}
 .fixs{padding:9px 12px;border-top:1px solid var(--line-soft);display:grid;gap:6px}
 .fixs .ttl{font-size:11.5px;letter-spacing:.01em;color:var(--dim);text-transform:none;display:flex;justify-content:space-between;font-weight:700}
 .fixs .ttl b{color:var(--chalk)}
@@ -140,27 +119,113 @@ table.stand tr.locked td.pts{color:var(--gold)}
 .fx .dash{color:var(--dim);font-weight:600}
 .fx.finished .sc{color:var(--chalk)}
 .fx.upcoming{opacity:.85}
-.fx input{width:33px;height:37px;text-align:center;background:var(--panel3);color:var(--chalk);border:1px solid var(--line);border-radius:8px;font-family:var(--sans);font-size:16.5px;font-variant-numeric:tabular-nums;-moz-appearance:textfield;padding:0}
+.fx input{width:34px;height:38px;text-align:center;background:var(--panel3);color:var(--chalk);border:1px solid var(--line);border-radius:8px;font-family:var(--sans);font-size:16.5px;font-variant-numeric:tabular-nums;-moz-appearance:textfield;padding:0}
 .fx input::-webkit-outer-spin-button,.fx input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
 .fx input:focus{outline:none;border-color:var(--gold-deep);background:rgba(255,210,77,.10)}
 .fx.mine .sc input{border-color:var(--gold-deep)}
-.fx .tag{font-size:10px;color:#2a2105;background:var(--gold);border-radius:3px;padding:0 4px;margin-left:5px;font-weight:700;vertical-align:middle}
+.fx .badges{display:inline-flex;align-items:center;gap:4px;margin-left:5px;vertical-align:middle}
+/* normalized state chip set (section 14.4): REAL/LIVE/YOU/FORECAST/LOCKED */
+.schip{font-size:9px;letter-spacing:.06em;text-transform:uppercase;font-weight:800;border-radius:3px;padding:1px 5px;line-height:1.5;white-space:nowrap}
+.schip.real{color:#04210f;background:var(--win)}
+.schip.live{color:#2a1505;background:var(--sf)}
+.schip.live::before{content:'';display:inline-block;width:5px;height:5px;border-radius:50%;background:#2a1505;margin-right:4px;vertical-align:middle;animation:lblink 1.1s infinite}
+.schip.you{color:#1a1030;background:var(--usa-ink);background:#c8b6ff}
+.schip.forecast{color:var(--dim);background:transparent;border:1px solid var(--line)}
+.schip.locked{color:#2a2105;background:var(--gold)}
 .predbar{display:flex;align-items:center;gap:10px;margin:13px 0 2px;flex-wrap:wrap}
 .predhint{font-size:13.75px;color:var(--dim);flex:1;min-width:180px}
 .reset{background:var(--panel3);border:1px solid var(--line);color:var(--chalk);border-radius:8px;padding:8px 13px;font-size:13px;font-weight:600;font-family:var(--sans);cursor:pointer;min-height:38px}
 .reset:active{background:rgba(255,255,255,.07)}
 .reset[hidden]{display:none}
-.fx .lk{font-size:11px;opacity:.7;margin-left:4px}
 .fx.live .sc input{border-color:var(--sf)}
-.live-badge{font-size:9px;letter-spacing:.05em;text-transform:uppercase;color:#2a1505;background:var(--sf);border-radius:3px;padding:1px 5px;font-weight:800;margin-left:5px;vertical-align:middle}
-.live-badge::before{content:'';display:inline-block;width:5px;height:5px;border-radius:50%;background:#2a1505;margin-right:4px;vertical-align:middle;animation:lblink 1.1s infinite}
 @keyframes lblink{50%{opacity:.2}}
-.revert{background:transparent;border:1px solid var(--line);color:var(--dim);border-radius:5px;font-size:13px;line-height:1;padding:2px 7px;margin-left:5px;cursor:pointer;min-height:26px;font-family:var(--sans);vertical-align:middle}
+.revert{display:inline-flex;align-items:center;gap:3px;background:transparent;border:1px solid var(--line);color:var(--dim);border-radius:5px;font-size:11px;line-height:1;padding:3px 7px;cursor:pointer;min-height:28px;font-family:var(--sans);vertical-align:middle}
 .revert:active{background:rgba(255,255,255,.07)}
 .dstatus{display:inline-flex;align-items:center;gap:6px}
 .dot{width:7px;height:7px;border-radius:50%;display:inline-block;background:var(--dim)}
 .dot.on{background:var(--win)}
 .dot.off{background:var(--eng)}
+
+/* sticky-bar earliest line */
+.vs-earliest{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px;font-weight:700;color:var(--gold);white-space:nowrap;flex-shrink:0}
+.vs-earliest.tbd{color:var(--dim);font-family:var(--sans);font-weight:600}
+
+/* hero answer card (section 8.4) */
+.hero-card{margin:15px 0 0;background:linear-gradient(180deg,rgba(255,210,77,.10),rgba(255,210,77,.03));border:1px solid var(--gold-deep);border-radius:16px;padding:16px 16px 14px;box-shadow:0 0 0 1px rgba(255,210,77,.18),0 8px 28px rgba(0,0,0,.28)}
+.hero-card.invalid{background:var(--panel2);border-color:var(--line-soft);box-shadow:none}
+.hero-card.is-final{box-shadow:0 0 0 2px rgba(255,210,77,.35),0 8px 28px rgba(0,0,0,.3)}
+.hero-mu{font-size:clamp(22px,6vw,32px);font-weight:800;line-height:1.05;letter-spacing:-.01em}
+.hero-mu .a{color:var(--usa-ink)} .hero-mu .b{color:var(--eng-ink)} .hero-mu .x{color:var(--dim);font-weight:400;font-size:.6em;margin:0 4px}
+.hero-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:13px 0 0}
+.hero-field{display:flex;flex-direction:column;gap:3px}
+.hf-lbl{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);font-weight:600}
+.hf-val{font-size:16px;font-weight:700;color:var(--chalk)}
+.hf-val.round{color:var(--gold)}
+.hf-val.num,.num{font-variant-numeric:tabular-nums}
+.hero-field .hf-val.num,.mn-date,.mn-id,.vs-earliest{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.hero-req{display:grid;gap:3px;margin:13px 0 0;padding:11px 12px;background:rgba(0,0,0,.16);border-radius:10px}
+.hero-req .req-a{color:var(--usa-ink);font-weight:700} .hero-req .req-b{color:var(--eng-ink);font-weight:700}
+.hero-status{margin:11px 0 0;font-size:13.5px;color:var(--dim)}
+
+/* secondary help disclosure */
+details.help{margin:12px 0 0;font-size:13px;color:var(--dim)}
+details.help summary{cursor:pointer;color:var(--dim);font-weight:600;padding:4px 0}
+details.help p{background:var(--panel2);border:1px solid var(--line-soft);border-radius:10px;padding:10px 12px;margin:6px 0 0}
+details.help .key{display:inline-block;background:var(--panel3);border:1px solid var(--line);border-radius:5px;padding:0 5px;font-weight:700}
+
+/* scenario route accordion */
+.scen{background:var(--panel2);border:1px solid var(--line-soft);border-radius:12px;overflow:hidden;margin-bottom:11px}
+.scen[open]{border-color:var(--line)}
+.scen-h{list-style:none;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:11px 13px;background:rgba(255,255,255,.03);border-bottom:1px solid var(--line-soft);cursor:pointer}
+.scen-h::-webkit-details-marker{display:none}
+.scen-h .if{font-size:11px;letter-spacing:.13em;color:var(--dim);text-transform:uppercase;font-weight:600}
+.scen-h .fin{font-size:15px}.scen-h .fin .ta{color:var(--usa-ink);font-weight:700}.scen-h .fin .tb{color:var(--eng-ink);font-weight:700}
+.scen-h .pill{margin-left:auto}
+
+/* two-lane convergence route (section 11) */
+.route{padding:13px;display:grid;grid-template-columns:1fr;gap:13px}
+.route .converge{grid-column:1/-1}
+@media(min-width:560px){.route{grid-template-columns:1fr 1fr;column-gap:20px}}
+.lane{display:flex;flex-direction:column;gap:0}
+.lane-t{font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;margin-bottom:7px}
+.lane-a .lane-t{color:var(--usa-ink)} .lane-b .lane-t{color:var(--eng-ink)}
+.lane-link{width:2px;height:14px;margin:0 0 0 13px;background:var(--line)}
+.lane-a .lane-link{background:var(--usa)} .lane-b .lane-link{background:var(--eng)}
+
+/* match node (section 11.4) */
+.mnode{display:grid;gap:3px;padding:9px 11px;background:var(--panel3);border:1px solid var(--line-soft);border-left:3px solid var(--line);border-radius:9px}
+.lane-a .mnode{border-left-color:var(--usa)} .lane-b .mnode{border-left-color:var(--eng)}
+.mn-date{font-size:12px;color:var(--dim);font-weight:600}
+.mn-round{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700}
+.mn-round .rlabel{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.04em}
+.mnode.r32 .rlabel{color:var(--r32)}.mnode.r16 .rlabel{color:var(--r16)}.mnode.qf .rlabel{color:var(--qf)}.mnode.sf .rlabel{color:var(--sf)}.mnode.final .rlabel{color:var(--final)}
+.rdot{width:8px;height:8px;border-radius:50%;display:inline-block;background:var(--dim);flex-shrink:0}
+.rdot.r32{background:var(--r32)}.rdot.r16{background:var(--r16)}.rdot.qf{background:var(--qf)}.rdot.sf{background:var(--sf)}.rdot.final{background:var(--final)}
+.mn-id{color:var(--dim);font-weight:600}
+.mn-teams{font-size:14px;font-weight:600;color:var(--chalk)}
+.mn-vs{color:var(--dim);font-weight:400;font-size:.85em}
+.mn-state{font-size:9px;letter-spacing:.08em;text-transform:uppercase;font-weight:800;color:var(--dim);justify-self:start}
+
+/* meeting node — gold convergence point (section 11.5) */
+.meetnode{display:grid;gap:4px;padding:13px 14px;background:rgba(255,210,77,.14);border:1px solid var(--gold-deep);border-radius:12px;box-shadow:0 0 0 1px rgba(255,210,77,.25)}
+.meet-lbl{font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--gold)}
+.meetnode .mn-date{color:var(--gold)}
+.meet-round{font-size:13px;font-weight:700;color:var(--gold)}
+.meet-teams{font-size:17px;font-weight:800;color:var(--chalk)}
+.meet-state{font-size:9px;letter-spacing:.08em;text-transform:uppercase;font-weight:800;color:#2a2105;background:var(--gold);border-radius:4px;padding:1px 6px;justify-self:start}
+
+.never{padding:11px 13px;color:var(--dim);font-size:14px;background:var(--panel2);border:1px dashed var(--line-soft);border-radius:10px}
+
+/* grouped discovery (section 16) */
+.disc-grid{display:grid;grid-template-columns:1fr;gap:13px}
+@media(min-width:560px){.disc-grid{grid-template-columns:1fr 1fr}}
+.disc-col{background:var(--panel2);border:1px solid var(--line-soft);border-radius:12px;padding:12px 13px}
+.disc-head{font-size:13px;font-weight:800;color:var(--chalk);margin-bottom:9px}
+.disc-bucket{margin-bottom:11px}
+.disc-round{display:flex;align-items:center;gap:6px;font-size:11px;letter-spacing:.04em;text-transform:uppercase;font-weight:700;color:var(--dim);margin-bottom:6px}
+.disc-chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{background:var(--panel3);border:1px solid var(--line);color:var(--chalk);border-radius:999px;padding:6px 11px;font-size:13px;font-weight:600;font-family:var(--sans);cursor:pointer;min-height:34px}
+.chip:active{background:rgba(255,255,255,.07)}
 
 footer{margin-top:30px;padding:15px 0 0;border-top:1px solid var(--line-soft);color:var(--dim);font-size:11.5px}
 .asof{font-size:11px;color:var(--dim);margin:12px 0 0;font-weight:600}
@@ -169,12 +234,12 @@ footer{margin-top:30px;padding:15px 0 0;border-top:1px solid var(--line-soft);co
 <body>
 <div class="top"><div class="top-in">
   <div class="tabs">
-    <button data-tab="matchups" class="on">Matchups</button>
-    <button data-tab="standings">Group standings</button>
+    <button data-tab="matchups" class="on">Matchup</button>
+    <button data-tab="standings">Forecast</button>
   </div>
   <div class="verdict-strip show" id="vstrip">
     <div class="vs-mu" id="vsMu"></div>
-    <span class="pill none" id="vsPill">—</span>
+    <span class="vs-earliest num" id="vsEarliest"></span>
   </div>
 </div></div>
 
@@ -197,43 +262,51 @@ footer{margin-top:30px;padding:15px 0 0;border-top:1px solid var(--line-soft);co
     </div>
   </div>
 
+  <div id="hero"></div>
+
   <section>
-    <div class="shead"><h2>Paths to the matchup</h2></div>
+    <div class="shead"><h2>Possible paths to the matchup</h2></div>
     <p class="bottomline" id="bottomline"></p>
-    <p class="explainer">Each card below is one way the groups can finish. Inside a card, <b>every row is a single knockout match that team must win</b> to stay alive; the rows read in order from the Round of 32 up. The <b style="color:var(--gold)">gold row</b> is the match where the two finally meet. <span class="key">M##</span> is the match's slot on the 104-game schedule: group games are 1&ndash;72, Round of 32 is 73&ndash;88, Round of 16 89&ndash;96, quarterfinals 97&ndash;100, semifinals 101&ndash;102, final 104.</p>
     <div class="scens" id="scens"></div>
+    <details class="help">
+      <summary>What does M## mean?</summary>
+      <p>Each route below is one way the groups can finish. Inside a route, every node is a single knockout match that team is assumed to win to stay alive; nodes read in order from the Round of 32 up. The gold meeting node is the match where the two teams meet. <span class="key">M##</span> is the match's slot on the 104-game schedule: group games are 1&ndash;72, Round of 32 is 73&ndash;88, Round of 16 89&ndash;96, quarterfinals 97&ndash;100, semifinals 101&ndash;102, final 104.</p>
+    </details>
   </section>
 
   <section>
-    <div class="shead"><h2>Every team vs your anchors</h2></div>
+    <div class="shead"><h2>Every team, by earliest meeting</h2></div>
     <p class="explainer" id="anchorIntro"></p>
-    <table class="atable" id="atable"></table>
+    <div id="discovery"></div>
   </section>
 </div>
 
 <!-- STANDINGS TAB -->
 <div class="panel" id="panel-standings">
   <header class="hero">
-    <p class="kick">Live tables</p>
-    <h1>Group standings</h1>
-    <p class="sub">All 48 teams, live from the official feed. Tap any score to run a what-if and the table reprojects instantly. A mathematically clinched group winner stays pinned to first with a lock, based on real results.</p>
+    <p class="kick">Projected tables</p>
+    <h1>Forecast</h1>
+    <p class="sub" id="forecastSub">These are projected standings, not official. Groups for your selected matchup come first. Edit any score to run a what-if and the projection updates instantly. A clinched group winner is locked, based on real results only.</p>
   </header>
-  <div class="predbar"><span class="predhint">Tap any score to run a what-if; edited matches get a "you" tag and a revert button. The clinch lock always follows the real results, never your edits.</span><button class="reset" id="resetScores" hidden>Reset my scores</button></div>
+  <div class="predbar"><span class="predhint">Edit any score to run a what-if; edited matches get a <b>YOU</b> chip and a revert button. The clinch lock follows real results only, never your edits.</span><button class="reset" id="resetScores" hidden>Reset my scores</button></div>
   <div class="groups" id="groups"></div>
 </div>
 
 <footer>
-  <p>Scores and standings are pulled live from worldcup26.ir and refresh every 30 seconds; if the feed is unreachable the page falls back to a saved snapshot. Paths follow the published Round-of-32 pairings and assume each team wins every match on the way. Standings order by points, head-to-head, goal difference, goals for, then FIFA ranking; fair-play is not modeled. Earliest-meeting figures assume both teams finish in the top two of their group.</p>
+  <p>Scores and standings use the configured live data source and refresh when available. If the feed is unreachable, the page falls back to the bundled snapshot. Paths follow the published Round-of-32 pairings and assume each selected team wins each prior knockout match. Standings are projected from real results plus your edits. Fair-play and drawing of lots are not modeled.</p>
   <p class="asof" id="asof"></p>
 </footer>
 </div>
 
 <script id="data" type="application/json">{"ANNEX":{"EFGHIJKL":{"A":"E","B":"J","D":"I","E":"F","G":"H","I":"G","K":"L","L":"K"},"DFGHIJKL":{"A":"H","B":"G","D":"I","E":"D","G":"J","I":"F","K":"L","L":"K"},"DEGHIJKL":{"A":"E","B":"J","D":"I","E":"D","G":"H","I":"G","K":"L","L":"K"},"DEFHIJKL":{"A":"E","B":"J","D":"I","E":"D","G":"H","I":"F","K":"L","L":"K"},"DEFGIJKL":{"A":"E","B":"G","D":"I","E":"D","G":"J","I":"F","K":"L","L":"K"},"DEFGHJKL":{"A":"E","B":"G","D":"J","E":"D","G":"H","I":"F","K":"L","L":"K"},"DEFGHIKL":{"A":"E","B":"G","D":"I","E":"D","G":"H","I":"F","K":"L","L":"K"},"DEFGHIJL":{"A":"E","B":"G","D":"J","E":"D","G":"H","I":"F","K":"L","L":"I"},"DEFGHIJK":{"A":"E","B":"G","D":"J","E":"D","G":"H","I":"F","K":"I","L":"K"},"CFGHIJKL":{"A":"H","B":"G","D":"I","E":"C","G":"J","I":"F","K":"L","L":"K"},"CEGHIJKL":{"A":"E","B":"J","D":"I","E":"C","G":"H","I":"G","K":"L","L":"K"},"CEFHIJKL":{"A":"E","B":"J","D":"I","E":"C","G":"H","I":"F","K":"L","L":"K"},"CEFGIJKL":{"A":"E","B":"G","D":"I","E":"C","G":"J","I":"F","K":"L","L":"K"},"CEFGHJKL":{"A":"E","B":"G","D":"J","E":"C","G":"H","I":"F","K":"L","L":"K"},"CEFGHIKL":{"A":"E","B":"G","D":"I","E":"C","G":"H","I":"F","K":"L","L":"K"},"CEFGHIJL":{"A":"E","B":"G","D":"J","E":"C","G":"H","I":"F","K":"L","L":"I"},"CEFGHIJK":{"A":"E","B":"G","D":"J","E":"C","G":"H","I":"F","K":"I","L":"K"},"CDGHIJKL":{"A":"H","B":"G","D":"I","E":"C","G":"J","I":"D","K":"L","L":"K"},"CDFHIJKL":{"A":"C","B":"J","D":"I","E":"D","G":"H","I":"F","K":"L","L":"K"},"CDFGIJKL":{"A":"C","B":"G","D":"I","E":"D","G":"J","I":"F","K":"L","L":"K"},"CDFGHJKL":{"A":"C","B":"G","D":"J","E":"D","G":"H","I":"F","K":"L","L":"K"},"CDFGHIKL":{"A":"C","B":"G","D":"I","E":"D","G":"H","I":"F","K":"L","L":"K"},"CDFGHIJL":{"A":"C","B":"G","D":"J","E":"D","G":"H","I":"F","K":"L","L":"I"},"CDFGHIJK":{"A":"C","B":"G","D":"J","E":"D","G":"H","I":"F","K":"I","L":"K"},"CDEHIJKL":{"A":"E","B":"J","D":"I","E":"C","G":"H","I":"D","K":"L","L":"K"},"CDEGIJKL":{"A":"E","B":"G","D":"I","E":"C","G":"J","I":"D","K":"L","L":"K"},"CDEGHJKL":{"A":"E","B":"G","D":"J","E":"C","G":"H","I":"D","K":"L","L":"K"},"CDEGHIKL":{"A":"E","B":"G","D":"I","E":"C","G":"H","I":"D","K":"L","L":"K"},"CDEGHIJL":{"A":"E","B":"G","D":"J","E":"C","G":"H","I":"D","K":"L","L":"I"},"CDEGHIJK":{"A":"E","B":"G","D":"J","E":"C","G":"H","I":"D","K":"I","L":"K"},"CDEFIJKL":{"A":"C","B":"J","D":"E","E":"D","G":"I","I":"F","K":"L","L":"K"},"CDEFHJKL":{"A":"C","B":"J","D":"E","E":"D","G":"H","I":"F","K":"L","L":"K"},"CDEFHIKL":{"A":"C","B":"E","D":"I","E":"D","G":"H","I":"F","K":"L","L":"K"},"CDEFHIJL":{"A":"C","B":"J","D":"E","E":"D","G":"H","I":"F","K":"L","L":"I"},"CDEFHIJK":{"A":"C","B":"J","D":"E","E":"D","G":"H","I":"F","K":"I","L":"K"},"CDEFGJKL":{"A":"C","B":"G","D":"E","E":"D","G":"J","I":"F","K":"L","L":"K"},"CDEFGIKL":{"A":"C","B":"G","D":"E","E":"D","G":"I","I":"F","K":"L","L":"K"},"CDEFGIJL":{"A":"C","B":"G","D":"E","E":"D","G":"J","I":"F","K":"L","L":"I"},"CDEFGIJK":{"A":"C","B":"G","D":"E","E":"D","G":"J","I":"F","K":"I","L":"K"},"CDEFGHKL":{"A":"C","B":"G","D":"E","E":"D","G":"H","I":"F","K":"L","L":"K"},"CDEFGHJL":{"A":"C","B":"G","D":"J","E":"D","G":"H","I":"F","K":"L","L":"E"},"CDEFGHJK":{"A":"C","B":"G","D":"J","E":"D","G":"H","I":"F","K":"E","L":"K"},"CDEFGHIL":{"A":"C","B":"G","D":"E","E":"D","G":"H","I":"F","K":"L","L":"I"},"CDEFGHIK":{"A":"C","B":"G","D":"E","E":"D","G":"H","I":"F","K":"I","L":"K"},"CDEFGHIJ":{"A":"C","B":"G","D":"J","E":"D","G":"H","I":"F","K":"E","L":"I"},"BFGHIJKL":{"A":"H","B":"J","D":"B","E":"F","G":"I","I":"G","K":"L","L":"K"},"BEGHIJKL":{"A":"E","B":"J","D":"I","E":"B","G":"H","I":"G","K":"L","L":"K"},"BEFHIJKL":{"A":"E","B":"J","D":"B","E":"F","G":"I","I":"H","K":"L","L":"K"},"BEFGIJKL":{"A":"E","B":"J","D":"B","E":"F","G":"I","I":"G","K":"L","L":"K"},"BEFGHJKL":{"A":"E","B":"J","D":"B","E":"F","G":"H","I":"G","K":"L","L":"K"},"BEFGHIKL":{"A":"E","B":"G","D":"B","E":"F","G":"I","I":"H","K":"L","L":"K"},"BEFGHIJL":{"A":"E","B":"J","D":"B","E":"F","G":"H","I":"G","K":"L","L":"I"},"BEFGHIJK":{"A":"E","B":"J","D":"B","E":"F","G":"H","I":"G","K":"I","L":"K"},"BDGHIJKL":{"A":"H","B":"J","D":"B","E":"D","G":"I","I":"G","K":"L","L":"K"},"BDFHIJKL":{"A":"H","B":"J","D":"B","E":"D","G":"I","I":"F","K":"L","L":"K"},"BDFGIJKL":{"A":"I","B":"G","D":"B","E":"D","G":"J","I":"F","K":"L","L":"K"},"BDFGHJKL":{"A":"H","B":"G","D":"B","E":"D","G":"J","I":"F","K":"L","L":"K"},"BDFGHIKL":{"A":"H","B":"G","D":"B","E":"D","G":"I","I":"F","K":"L","L":"K"},"BDFGHIJL":{"A":"H","B":"G","D":"B","E":"D","G":"J","I":"F","K":"L","L":"I"},"BDFGHIJK":{"A":"H","B":"G","D":"B","E":"D","G":"J","I":"F","K":"I","L":"K"},"BDEHIJKL":{"A":"E","B":"J","D":"B","E":"D","G":"I","I":"H","K":"L","L":"K"},"BDEGIJKL":{"A":"E","B":"J","D":"B","E":"D","G":"I","I":"G","K":"L","L":"K"},"BDEGHJKL":{"A":"E","B":"J","D":"B","E":"D","G":"H","I":"G","K":"L","L":"K"},"BDEGHIKL":{"A":"E","B":"G","D":"B","E":"D","G":"I","I":"H","K":"L","L":"K"},"BDEGHIJL":{"A":"E","B":"J","D":"B","E":"D","G":"H","I":"G","K":"L","L":"I"},"BDEGHIJK":{"A":"E","B":"J","D":"B","E":"D","G":"H","I":"G","K":"I","L":"K"},"BDEFIJKL":{"A":"E","B":"J","D":"B","E":"D","G":"I","I":"F","K":"L","L":"K"},"BDEFHJKL":{"A":"E","B":"J","D":"B","E":"D","G":"H","I":"F","K":"L","L":"K"},"BDEFHIKL":{"A":"E","B":"I","D":"B","E":"D","G":"H","I":"F","K":"L","L":"K"},"BDEFHIJL":{"A":"E","B":"J","D":"B","E":"D","G":"H","I":"F","K":"L","L":"I"},"BDEFHIJK":{"A":"E","B":"J","D":"B","E":"D","G":"H","I":"F","K":"I","L":"K"},"BDEFGJKL":{"A":"E","B":"G","D":"B","E":"D","G":"J","I":"F","K":"L","L":"K"},"BDEFGIKL":{"A":"E","B":"G","D":"B","E":"D","G":"I","I":"F","K":"L","L":"K"},"BDEFGIJL":{"A":"E","B":"G","D":"B","E":"D","G":"J","I":"F","K":"L","L":"I"},"BDEFGIJK":{"A":"E","B":"G","D":"B","E":"D","G":"J","I":"F","K":"I","L":"K"},"BDEFGHKL":{"A":"E","B":"G","D":"B","E":"D","G":"H","I":"F","K":"L","L":"K"},"BDEFGHJL":{"A":"H","B":"G","D":"B","E":"D","G":"J","I":"F","K":"L","L":"E"},"BDEFGHJK":{"A":"H","B":"G","D":"B","E":"D","G":"J","I":"F","K":"E","L":"K"},"BDEFGHIL":{"A":"E","B":"G","D":"B","E":"D","G":"H","I":"F","K":"L","L":"I"},"BDEFGHIK":{"A":"E","B":"G","D":"B","E":"D","G":"H","I":"F","K":"I","L":"K"},"BDEFGHIJ":{"A":"H","B":"G","D":"B","E":"D","G":"J","I":"F","K":"E","L":"I"},"BCGHIJKL":{"A":"H","B":"J","D":"B","E":"C","G":"I","I":"G","K":"L","L":"K"},"BCFHIJKL":{"A":"H","B":"J","D":"B","E":"C","G":"I","I":"F","K":"L","L":"K"},"BCFGIJKL":{"A":"I","B":"G","D":"B","E":"C","G":"J","I":"F","K":"L","L":"K"},"BCFGHJKL":{"A":"H","B":"G","D":"B","E":"C","G":"J","I":"F","K":"L","L":"K"},"BCFGHIKL":{"A":"H","B":"G","D":"B","E":"C","G":"I","I":"F","K":"L","L":"K"},"BCFGHIJL":{"A":"H","B":"G","D":"B","E":"C","G":"J","I":"F","K":"L","L":"I"},"BCFGHIJK":{"A":"H","B":"G","D":"B","E":"C","G":"J","I":"F","K":"I","L":"K"},"BCEHIJKL":{"A":"E","B":"J","D":"B","E":"C","G":"I","I":"H","K":"L","L":"K"},"BCEGIJKL":{"A":"E","B":"J","D":"B","E":"C","G":"I","I":"G","K":"L","L":"K"},"BCEGHJKL":{"A":"E","B":"J","D":"B","E":"C","G":"H","I":"G","K":"L","L":"K"},"BCEGHIKL":{"A":"E","B":"G","D":"B","E":"C","G":"I","I":"H","K":"L","L":"K"},"BCEGHIJL":{"A":"E","B":"J","D":"B","E":"C","G":"H","I":"G","K":"L","L":"I"},"BCEGHIJK":{"A":"E","B":"J","D":"B","E":"C","G":"H","I":"G","K":"I","L":"K"},"BCEFIJKL":{"A":"E","B":"J","D":"B","E":"C","G":"I","I":"F","K":"L","L":"K"},"BCEFHJKL":{"A":"E","B":"J","D":"B","E":"C","G":"H","I":"F","K":"L","L":"K"},"BCEFHIKL":{"A":"E","B":"I","D":"B","E":"C","G":"H","I":"F","K":"L","L":"K"},"BCEFHIJL":{"A":"E","B":"J","D":"B","E":"C","G":"H","I":"F","K":"L","L":"I"},"BCEFHIJK":{"A":"E","B":"J","D":"B","E":"C","G":"H","I":"F","K":"I","L":"K"},"BCEFGJKL":{"A":"E","B":"G","D":"B","E":"C","G":"J","I":"F","K":"L","L":"K"},"BCEFGIKL":{"A":"E","B":"G","D":"B","E":"C","G":"I","I":"F","K":"L","L":"K"},"BCEFGIJL":{"A":"E","B":"G","D":"B","E":"C","G":"J","I":"F","K":"L","L":"I"},"BCEFGIJK":{"A":"E","B":"G","D":"B","E":"C","G":"J","I":"F","K":"I","L":"K"},"BCEFGHKL":{"A":"E","B":"G","D":"B","E":"C","G":"H","I":"F","K":"L","L":"K"},"BCEFGHJL":{"A":"H","B":"G","D":"B","E":"C","G":"J","I":"F","K":"L","L":"E"},"BCEFGHJK":{"A":"H","B":"G","D":"B","E":"C","G":"J","I":"F","K":"E","L":"K"},"BCEFGHIL":{"A":"E","B":"G","D":"B","E":"C","G":"H","I":"F","K":"L","L":"I"},"BCEFGHIK":{"A":"E","B":"G","D":"B","E":"C","G":"H","I":"F","K":"I","L":"K"},"BCEFGHIJ":{"A":"H","B":"G","D":"B","E":"C","G":"J","I":"F","K":"E","L":"I"},"BCDHIJKL":{"A":"H","B":"J","D":"B","E":"C","G":"I","I":"D","K":"L","L":"K"},"BCDGIJKL":{"A":"I","B":"G","D":"B","E":"C","G":"J","I":"D","K":"L","L":"K"},"BCDGHJKL":{"A":"H","B":"G","D":"B","E":"C","G":"J","I":"D","K":"L","L":"K"},"BCDGHIKL":{"A":"H","B":"G","D":"B","E":"C","G":"I","I":"D","K":"L","L":"K"},"BCDGHIJL":{"A":"H","B":"G","D":"B","E":"C","G":"J","I":"D","K":"L","L":"I"},"BCDGHIJK":{"A":"H","B":"G","D":"B","E":"C","G":"J","I":"D","K":"I","L":"K"},"BCDFIJKL":{"A":"C","B":"J","D":"B","E":"D","G":"I","I":"F","K":"L","L":"K"},"BCDFHJKL":{"A":"C","B":"J","D":"B","E":"D","G":"H","I":"F","K":"L","L":"K"},"BCDFHIKL":{"A":"C","B":"I","D":"B","E":"D","G":"H","I":"F","K":"L","L":"K"},"BCDFHIJL":{"A":"C","B":"J","D":"B","E":"D","G":"H","I":"F","K":"L","L":"I"},"BCDFHIJK":{"A":"C","B":"J","D":"B","E":"D","G":"H","I":"F","K":"I","L":"K"},"BCDFGJKL":{"A":"C","B":"G","D":"B","E":"D","G":"J","I":"F","K":"L","L":"K"},"BCDFGIKL":{"A":"C","B":"G","D":"B","E":"D","G":"I","I":"F","K":"L","L":"K"},"BCDFGIJL":{"A":"C","B":"G","D":"B","E":"D","G":"J","I":"F","K":"L","L":"I"},"BCDFGIJK":{"A":"C","B":"G","D":"B","E":"D","G":"J","I":"F","K":"I","L":"K"},"BCDFGHKL":{"A":"C","B":"G","D":"B","E":"D","G":"H","I":"F","K":"L","L":"K"},"BCDFGHJL":{"A":"C","B":"G","D":"B","E":"D","G":"H","I":"F","K":"L","L":"J"},"BCDFGHJK":{"A":"H","B":"G","D":"B","E":"C","G":"J","I":"F","K":"D","L":"K"},"BCDFGHIL":{"A":"C","B":"G","D":"B","E":"D","G":"H","I":"F","K":"L","L":"I"},"BCDFGHIK":{"A":"C","B":"G","D":"B","E":"D","G":"H","I":"F","K":"I","L":"K"},"BCDFGHIJ":{"A":"H","B":"G","D":"B","E":"C","G":"J","I":"F","K":"D","L":"I"},"BCDEIJKL":{"A":"E","B":"J","D":"B","E":"C","G":"I","I":"D","K":"L","L":"K"},"BCDEHJKL":{"A":"E","B":"J","D":"B","E":"C","G":"H","I":"D","K":"L","L":"K"},"BCDEHIKL":{"A":"E","B":"I","D":"B","E":"C","G":"H","I":"D","K":"L","L":"K"},"BCDEHIJL":{"A":"E","B":"J","D":"B","E":"C","G":"H","I":"D","K":"L","L":"I"},"BCDEHIJK":{"A":"E","B":"J","D":"B","E":"C","G":"H","I":"D","K":"I","L":"K"},"BCDEGJKL":{"A":"E","B":"G","D":"B","E":"C","G":"J","I":"D","K":"L","L":"K"},"BCDEGIKL":{"A":"E","B":"G","D":"B","E":"C","G":"I","I":"D","K":"L","L":"K"},"BCDEGIJL":{"A":"E","B":"G","D":"B","E":"C","G":"J","I":"D","K":"L","L":"I"},"BCDEGIJK":{"A":"E","B":"G","D":"B","E":"C","G":"J","I":"D","K":"I","L":"K"},"BCDEGHKL":{"A":"E","B":"G","D":"B","E":"C","G":"H","I":"D","K":"L","L":"K"},"BCDEGHJL":{"A":"H","B":"G","D":"B","E":"C","G":"J","I":"D","K":"L","L":"E"},"BCDEGHJK":{"A":"H","B":"G","D":"B","E":"C","G":"J","I":"D","K":"E","L":"K"},"BCDEGHIL":{"A":"E","B":"G","D":"B","E":"C","G":"H","I":"D","K":"L","L":"I"},"BCDEGHIK":{"A":"E","B":"G","D":"B","E":"C","G":"H","I":"D","K":"I","L":"K"},"BCDEGHIJ":{"A":"H","B":"G","D":"B","E":"C","G":"J","I":"D","K":"E","L":"I"},"BCDEFJKL":{"A":"C","B":"J","D":"B","E":"D","G":"E","I":"F","K":"L","L":"K"},"BCDEFIKL":{"A":"C","B":"E","D":"B","E":"D","G":"I","I":"F","K":"L","L":"K"},"BCDEFIJL":{"A":"C","B":"J","D":"B","E":"D","G":"E","I":"F","K":"L","L":"I"},"BCDEFIJK":{"A":"C","B":"J","D":"B","E":"D","G":"E","I":"F","K":"I","L":"K"},"BCDEFHKL":{"A":"C","B":"E","D":"B","E":"D","G":"H","I":"F","K":"L","L":"K"},"BCDEFHJL":{"A":"C","B":"J","D":"B","E":"D","G":"H","I":"F","K":"L","L":"E"},"BCDEFHJK":{"A":"C","B":"J","D":"B","E":"D","G":"H","I":"F","K":"E","L":"K"},"BCDEFHIL":{"A":"C","B":"E","D":"B","E":"D","G":"H","I":"F","K":"L","L":"I"},"BCDEFHIK":{"A":"C","B":"E","D":"B","E":"D","G":"H","I":"F","K":"I","L":"K"},"BCDEFHIJ":{"A":"C","B":"J","D":"B","E":"D","G":"H","I":"F","K":"E","L":"I"},"BCDEFGKL":{"A":"C","B":"G","D":"B","E":"D","G":"E","I":"F","K":"L","L":"K"},"BCDEFGJL":{"A":"C","B":"G","D":"B","E":"D","G":"J","I":"F","K":"L","L":"E"},"BCDEFGJK":{"A":"C","B":"G","D":"B","E":"D","G":"J","I":"F","K":"E","L":"K"},"BCDEFGIL":{"A":"C","B":"G","D":"B","E":"D","G":"E","I":"F","K":"L","L":"I"},"BCDEFGIK":{"A":"C","B":"G","D":"B","E":"D","G":"E","I":"F","K":"I","L":"K"},"BCDEFGIJ":{"A":"C","B":"G","D":"B","E":"D","G":"J","I":"F","K":"E","L":"I"},"BCDEFGHL":{"A":"C","B":"G","D":"B","E":"D","G":"H","I":"F","K":"L","L":"E"},"BCDEFGHK":{"A":"C","B":"G","D":"B","E":"D","G":"H","I":"F","K":"E","L":"K"},"BCDEFGHJ":{"A":"H","B":"G","D":"B","E":"C","G":"J","I":"F","K":"D","L":"E"},"BCDEFGHI":{"A":"C","B":"G","D":"B","E":"D","G":"H","I":"F","K":"E","L":"I"},"AFGHIJKL":{"A":"H","B":"J","D":"I","E":"F","G":"A","I":"G","K":"L","L":"K"},"AEGHIJKL":{"A":"E","B":"J","D":"I","E":"A","G":"H","I":"G","K":"L","L":"K"},"AEFHIJKL":{"A":"E","B":"J","D":"I","E":"F","G":"A","I":"H","K":"L","L":"K"},"AEFGIJKL":{"A":"E","B":"J","D":"I","E":"F","G":"A","I":"G","K":"L","L":"K"},"AEFGHJKL":{"A":"E","B":"G","D":"J","E":"F","G":"A","I":"H","K":"L","L":"K"},"AEFGHIKL":{"A":"E","B":"G","D":"I","E":"F","G":"A","I":"H","K":"L","L":"K"},"AEFGHIJL":{"A":"E","B":"G","D":"J","E":"F","G":"A","I":"H","K":"L","L":"I"},"AEFGHIJK":{"A":"E","B":"G","D":"J","E":"F","G":"A","I":"H","K":"I","L":"K"},"ADGHIJKL":{"A":"H","B":"J","D":"I","E":"D","G":"A","I":"G","K":"L","L":"K"},"ADFHIJKL":{"A":"H","B":"J","D":"I","E":"D","G":"A","I":"F","K":"L","L":"K"},"ADFGIJKL":{"A":"I","B":"G","D":"J","E":"D","G":"A","I":"F","K":"L","L":"K"},"ADFGHJKL":{"A":"H","B":"G","D":"J","E":"D","G":"A","I":"F","K":"L","L":"K"},"ADFGHIKL":{"A":"H","B":"G","D":"I","E":"D","G":"A","I":"F","K":"L","L":"K"},"ADFGHIJL":{"A":"H","B":"G","D":"J","E":"D","G":"A","I":"F","K":"L","L":"I"},"ADFGHIJK":{"A":"H","B":"G","D":"J","E":"D","G":"A","I":"F","K":"I","L":"K"},"ADEHIJKL":{"A":"E","B":"J","D":"I","E":"D","G":"A","I":"H","K":"L","L":"K"},"ADEGIJKL":{"A":"E","B":"J","D":"I","E":"D","G":"A","I":"G","K":"L","L":"K"},"ADEGHJKL":{"A":"E","B":"G","D":"J","E":"D","G":"A","I":"H","K":"L","L":"K"},"ADEGHIKL":{"A":"E","B":"G","D":"I","E":"D","G":"A","I":"H","K":"L","L":"K"},"ADEGHIJL":{"A":"E","B":"G","D":"J","E":"D","G":"A","I":"H","K":"L","L":"I"},"ADEGHIJK":{"A":"E","B":"G","D":"J","E":"D","G":"A","I":"H","K":"I","L":"K"},"ADEFIJKL":{"A":"E","B":"J","D":"I","E":"D","G":"A","I":"F","K":"L","L":"K"},"ADEFHJKL":{"A":"H","B":"J","D":"E","E":"D","G":"A","I":"F","K":"L","L":"K"},"ADEFHIKL":{"A":"H","B":"E","D":"I","E":"D","G":"A","I":"F","K":"L","L":"K"},"ADEFHIJL":{"A":"H","B":"J","D":"E","E":"D","G":"A","I":"F","K":"L","L":"I"},"ADEFHIJK":{"A":"H","B":"J","D":"E","E":"D","G":"A","I":"F","K":"I","L":"K"},"ADEFGJKL":{"A":"E","B":"G","D":"J","E":"D","G":"A","I":"F","K":"L","L":"K"},"ADEFGIKL":{"A":"E","B":"G","D":"I","E":"D","G":"A","I":"F","K":"L","L":"K"},"ADEFGIJL":{"A":"E","B":"G","D":"J","E":"D","G":"A","I":"F","K":"L","L":"I"},"ADEFGIJK":{"A":"E","B":"G","D":"J","E":"D","G":"A","I":"F","K":"I","L":"K"},"ADEFGHKL":{"A":"H","B":"G","D":"E","E":"D","G":"A","I":"F","K":"L","L":"K"},"ADEFGHJL":{"A":"H","B":"G","D":"J","E":"D","G":"A","I":"F","K":"L","L":"E"},"ADEFGHJK":{"A":"H","B":"G","D":"J","E":"D","G":"A","I":"F","K":"E","L":"K"},"ADEFGHIL":{"A":"H","B":"G","D":"E","E":"D","G":"A","I":"F","K":"L","L":"I"},"ADEFGHIK":{"A":"H","B":"G","D":"E","E":"D","G":"A","I":"F","K":"I","L":"K"},"ADEFGHIJ":{"A":"H","B":"G","D":"J","E":"D","G":"A","I":"F","K":"E","L":"I"},"ACGHIJKL":{"A":"H","B":"J","D":"I","E":"C","G":"A","I":"G","K":"L","L":"K"},"ACFHIJKL":{"A":"H","B":"J","D":"I","E":"C","G":"A","I":"F","K":"L","L":"K"},"ACFGIJKL":{"A":"I","B":"G","D":"J","E":"C","G":"A","I":"F","K":"L","L":"K"},"ACFGHJKL":{"A":"H","B":"G","D":"J","E":"C","G":"A","I":"F","K":"L","L":"K"},"ACFGHIKL":{"A":"H","B":"G","D":"I","E":"C","G":"A","I":"F","K":"L","L":"K"},"ACFGHIJL":{"A":"H","B":"G","D":"J","E":"C","G":"A","I":"F","K":"L","L":"I"},"ACFGHIJK":{"A":"H","B":"G","D":"J","E":"C","G":"A","I":"F","K":"I","L":"K"},"ACEHIJKL":{"A":"E","B":"J","D":"I","E":"C","G":"A","I":"H","K":"L","L":"K"},"ACEGIJKL":{"A":"E","B":"J","D":"I","E":"C","G":"A","I":"G","K":"L","L":"K"},"ACEGHJKL":{"A":"E","B":"G","D":"J","E":"C","G":"A","I":"H","K":"L","L":"K"},"ACEGHIKL":{"A":"E","B":"G","D":"I","E":"C","G":"A","I":"H","K":"L","L":"K"},"ACEGHIJL":{"A":"E","B":"G","D":"J","E":"C","G":"A","I":"H","K":"L","L":"I"},"ACEGHIJK":{"A":"E","B":"G","D":"J","E":"C","G":"A","I":"H","K":"I","L":"K"},"ACEFIJKL":{"A":"E","B":"J","D":"I","E":"C","G":"A","I":"F","K":"L","L":"K"},"ACEFHJKL":{"A":"H","B":"J","D":"E","E":"C","G":"A","I":"F","K":"L","L":"K"},"ACEFHIKL":{"A":"H","B":"E","D":"I","E":"C","G":"A","I":"F","K":"L","L":"K"},"ACEFHIJL":{"A":"H","B":"J","D":"E","E":"C","G":"A","I":"F","K":"L","L":"I"},"ACEFHIJK":{"A":"H","B":"J","D":"E","E":"C","G":"A","I":"F","K":"I","L":"K"},"ACEFGJKL":{"A":"E","B":"G","D":"J","E":"C","G":"A","I":"F","K":"L","L":"K"},"ACEFGIKL":{"A":"E","B":"G","D":"I","E":"C","G":"A","I":"F","K":"L","L":"K"},"ACEFGIJL":{"A":"E","B":"G","D":"J","E":"C","G":"A","I":"F","K":"L","L":"I"},"ACEFGIJK":{"A":"E","B":"G","D":"J","E":"C","G":"A","I":"F","K":"I","L":"K"},"ACEFGHKL":{"A":"H","B":"G","D":"E","E":"C","G":"A","I":"F","K":"L","L":"K"},"ACEFGHJL":{"A":"H","B":"G","D":"J","E":"C","G":"A","I":"F","K":"L","L":"E"},"ACEFGHJK":{"A":"H","B":"G","D":"J","E":"C","G":"A","I":"F","K":"E","L":"K"},"ACEFGHIL":{"A":"H","B":"G","D":"E","E":"C","G":"A","I":"F","K":"L","L":"I"},"ACEFGHIK":{"A":"H","B":"G","D":"E","E":"C","G":"A","I":"F","K":"I","L":"K"},"ACEFGHIJ":{"A":"H","B":"G","D":"J","E":"C","G":"A","I":"F","K":"E","L":"I"},"ACDHIJKL":{"A":"H","B":"J","D":"I","E":"C","G":"A","I":"D","K":"L","L":"K"},"ACDGIJKL":{"A":"I","B":"G","D":"J","E":"C","G":"A","I":"D","K":"L","L":"K"},"ACDGHJKL":{"A":"H","B":"G","D":"J","E":"C","G":"A","I":"D","K":"L","L":"K"},"ACDGHIKL":{"A":"H","B":"G","D":"I","E":"C","G":"A","I":"D","K":"L","L":"K"},"ACDGHIJL":{"A":"H","B":"G","D":"J","E":"C","G":"A","I":"D","K":"L","L":"I"},"ACDGHIJK":{"A":"H","B":"G","D":"J","E":"C","G":"A","I":"D","K":"I","L":"K"},"ACDFIJKL":{"A":"C","B":"J","D":"I","E":"D","G":"A","I":"F","K":"L","L":"K"},"ACDFHJKL":{"A":"H","B":"J","D":"F","E":"C","G":"A","I":"D","K":"L","L":"K"},"ACDFHIKL":{"A":"H","B":"F","D":"I","E":"C","G":"A","I":"D","K":"L","L":"K"},"ACDFHIJL":{"A":"H","B":"J","D":"F","E":"C","G":"A","I":"D","K":"L","L":"I"},"ACDFHIJK":{"A":"H","B":"J","D":"F","E":"C","G":"A","I":"D","K":"I","L":"K"},"ACDFGJKL":{"A":"C","B":"G","D":"J","E":"D","G":"A","I":"F","K":"L","L":"K"},"ACDFGIKL":{"A":"C","B":"G","D":"I","E":"D","G":"A","I":"F","K":"L","L":"K"},"ACDFGIJL":{"A":"C","B":"G","D":"J","E":"D","G":"A","I":"F","K":"L","L":"I"},"ACDFGIJK":{"A":"C","B":"G","D":"J","E":"D","G":"A","I":"F","K":"I","L":"K"},"ACDFGHKL":{"A":"H","B":"G","D":"F","E":"C","G":"A","I":"D","K":"L","L":"K"},"ACDFGHJL":{"A":"C","B":"G","D":"J","E":"D","G":"A","I":"F","K":"L","L":"H"},"ACDFGHJK":{"A":"H","B":"G","D":"J","E":"C","G":"A","I":"F","K":"D","L":"K"},"ACDFGHIL":{"A":"H","B":"G","D":"F","E":"C","G":"A","I":"D","K":"L","L":"I"},"ACDFGHIK":{"A":"H","B":"G","D":"F","E":"C","G":"A","I":"D","K":"I","L":"K"},"ACDFGHIJ":{"A":"H","B":"G","D":"J","E":"C","G":"A","I":"F","K":"D","L":"I"},"ACDEIJKL":{"A":"E","B":"J","D":"I","E":"C","G":"A","I":"D","K":"L","L":"K"},"ACDEHJKL":{"A":"H","B":"J","D":"E","E":"C","G":"A","I":"D","K":"L","L":"K"},"ACDEHIKL":{"A":"H","B":"E","D":"I","E":"C","G":"A","I":"D","K":"L","L":"K"},"ACDEHIJL":{"A":"H","B":"J","D":"E","E":"C","G":"A","I":"D","K":"L","L":"I"},"ACDEHIJK":{"A":"H","B":"J","D":"E","E":"C","G":"A","I":"D","K":"I","L":"K"},"ACDEGJKL":{"A":"E","B":"G","D":"J","E":"C","G":"A","I":"D","K":"L","L":"K"},"ACDEGIKL":{"A":"E","B":"G","D":"I","E":"C","G":"A","I":"D","K":"L","L":"K"},"ACDEGIJL":{"A":"E","B":"G","D":"J","E":"C","G":"A","I":"D","K":"L","L":"I"},"ACDEGIJK":{"A":"E","B":"G","D":"J","E":"C","G":"A","I":"D","K":"I","L":"K"},"ACDEGHKL":{"A":"H","B":"G","D":"E","E":"C","G":"A","I":"D","K":"L","L":"K"},"ACDEGHJL":{"A":"H","B":"G","D":"J","E":"C","G":"A","I":"D","K":"L","L":"E"},"ACDEGHJK":{"A":"H","B":"G","D":"J","E":"C","G":"A","I":"D","K":"E","L":"K"},"ACDEGHIL":{"A":"H","B":"G","D":"E","E":"C","G":"A","I":"D","K":"L","L":"I"},"ACDEGHIK":{"A":"H","B":"G","D":"E","E":"C","G":"A","I":"D","K":"I","L":"K"},"ACDEGHIJ":{"A":"H","B":"G","D":"J","E":"C","G":"A","I":"D","K":"E","L":"I"},"ACDEFJKL":{"A":"C","B":"J","D":"E","E":"D","G":"A","I":"F","K":"L","L":"K"},"ACDEFIKL":{"A":"C","B":"E","D":"I","E":"D","G":"A","I":"F","K":"L","L":"K"},"ACDEFIJL":{"A":"C","B":"J","D":"E","E":"D","G":"A","I":"F","K":"L","L":"I"},"ACDEFIJK":{"A":"C","B":"J","D":"E","E":"D","G":"A","I":"F","K":"I","L":"K"},"ACDEFHKL":{"A":"H","B":"E","D":"F","E":"C","G":"A","I":"D","K":"L","L":"K"},"ACDEFHJL":{"A":"H","B":"J","D":"F","E":"C","G":"A","I":"D","K":"L","L":"E"},"ACDEFHJK":{"A":"H","B":"J","D":"E","E":"C","G":"A","I":"F","K":"D","L":"K"},"ACDEFHIL":{"A":"H","B":"E","D":"F","E":"C","G":"A","I":"D","K":"L","L":"I"},"ACDEFHIK":{"A":"H","B":"E","D":"F","E":"C","G":"A","I":"D","K":"I","L":"K"},"ACDEFHIJ":{"A":"H","B":"J","D":"E","E":"C","G":"A","I":"F","K":"D","L":"I"},"ACDEFGKL":{"A":"C","B":"G","D":"E","E":"D","G":"A","I":"F","K":"L","L":"K"},"ACDEFGJL":{"A":"C","B":"G","D":"J","E":"D","G":"A","I":"F","K":"L","L":"E"},"ACDEFGJK":{"A":"C","B":"G","D":"J","E":"D","G":"A","I":"F","K":"E","L":"K"},"ACDEFGIL":{"A":"C","B":"G","D":"E","E":"D","G":"A","I":"F","K":"L","L":"I"},"ACDEFGIK":{"A":"C","B":"G","D":"E","E":"D","G":"A","I":"F","K":"I","L":"K"},"ACDEFGIJ":{"A":"C","B":"G","D":"J","E":"D","G":"A","I":"F","K":"E","L":"I"},"ACDEFGHL":{"A":"H","B":"G","D":"F","E":"C","G":"A","I":"D","K":"L","L":"E"},"ACDEFGHK":{"A":"H","B":"G","D":"E","E":"C","G":"A","I":"F","K":"D","L":"K"},"ACDEFGHJ":{"A":"H","B":"G","D":"J","E":"C","G":"A","I":"F","K":"D","L":"E"},"ACDEFGHI":{"A":"H","B":"G","D":"E","E":"C","G":"A","I":"F","K":"D","L":"I"},"ABGHIJKL":{"A":"H","B":"J","D":"B","E":"A","G":"I","I":"G","K":"L","L":"K"},"ABFHIJKL":{"A":"H","B":"J","D":"B","E":"A","G":"I","I":"F","K":"L","L":"K"},"ABFGIJKL":{"A":"I","B":"J","D":"B","E":"F","G":"A","I":"G","K":"L","L":"K"},"ABFGHJKL":{"A":"H","B":"J","D":"B","E":"F","G":"A","I":"G","K":"L","L":"K"},"ABFGHIKL":{"A":"H","B":"G","D":"B","E":"A","G":"I","I":"F","K":"L","L":"K"},"ABFGHIJL":{"A":"H","B":"J","D":"B","E":"F","G":"A","I":"G","K":"L","L":"I"},"ABFGHIJK":{"A":"H","B":"J","D":"B","E":"F","G":"A","I":"G","K":"I","L":"K"},"ABEHIJKL":{"A":"E","B":"J","D":"B","E":"A","G":"I","I":"H","K":"L","L":"K"},"ABEGIJKL":{"A":"E","B":"J","D":"B","E":"A","G":"I","I":"G","K":"L","L":"K"},"ABEGHJKL":{"A":"E","B":"J","D":"B","E":"A","G":"H","I":"G","K":"L","L":"K"},"ABEGHIKL":{"A":"E","B":"G","D":"B","E":"A","G":"I","I":"H","K":"L","L":"K"},"ABEGHIJL":{"A":"E","B":"J","D":"B","E":"A","G":"H","I":"G","K":"L","L":"I"},"ABEGHIJK":{"A":"E","B":"J","D":"B","E":"A","G":"H","I":"G","K":"I","L":"K"},"ABEFIJKL":{"A":"E","B":"J","D":"B","E":"A","G":"I","I":"F","K":"L","L":"K"},"ABEFHJKL":{"A":"E","B":"J","D":"B","E":"F","G":"A","I":"H","K":"L","L":"K"},"ABEFHIKL":{"A":"E","B":"I","D":"B","E":"F","G":"A","I":"H","K":"L","L":"K"},"ABEFHIJL":{"A":"E","B":"J","D":"B","E":"F","G":"A","I":"H","K":"L","L":"I"},"ABEFHIJK":{"A":"E","B":"J","D":"B","E":"F","G":"A","I":"H","K":"I","L":"K"},"ABEFGJKL":{"A":"E","B":"J","D":"B","E":"F","G":"A","I":"G","K":"L","L":"K"},"ABEFGIKL":{"A":"E","B":"G","D":"B","E":"A","G":"I","I":"F","K":"L","L":"K"},"ABEFGIJL":{"A":"E","B":"J","D":"B","E":"F","G":"A","I":"G","K":"L","L":"I"},"ABEFGIJK":{"A":"E","B":"J","D":"B","E":"F","G":"A","I":"G","K":"I","L":"K"},"ABEFGHKL":{"A":"E","B":"G","D":"B","E":"F","G":"A","I":"H","K":"L","L":"K"},"ABEFGHJL":{"A":"H","B":"J","D":"B","E":"F","G":"A","I":"G","K":"L","L":"E"},"ABEFGHJK":{"A":"H","B":"J","D":"B","E":"F","G":"A","I":"G","K":"E","L":"K"},"ABEFGHIL":{"A":"E","B":"G","D":"B","E":"F","G":"A","I":"H","K":"L","L":"I"},"ABEFGHIK":{"A":"E","B":"G","D":"B","E":"F","G":"A","I":"H","K":"I","L":"K"},"ABEFGHIJ":{"A":"H","B":"J","D":"B","E":"F","G":"A","I":"G","K":"E","L":"I"},"ABDHIJKL":{"A":"I","B":"J","D":"B","E":"D","G":"A","I":"H","K":"L","L":"K"},"ABDGIJKL":{"A":"I","B":"J","D":"B","E":"D","G":"A","I":"G","K":"L","L":"K"},"ABDGHJKL":{"A":"H","B":"J","D":"B","E":"D","G":"A","I":"G","K":"L","L":"K"},"ABDGHIKL":{"A":"I","B":"G","D":"B","E":"D","G":"A","I":"H","K":"L","L":"K"},"ABDGHIJL":{"A":"H","B":"J","D":"B","E":"D","G":"A","I":"G","K":"L","L":"I"},"ABDGHIJK":{"A":"H","B":"J","D":"B","E":"D","G":"A","I":"G","K":"I","L":"K"},"ABDFIJKL":{"A":"I","B":"J","D":"B","E":"D","G":"A","I":"F","K":"L","L":"K"},"ABDFHJKL":{"A":"H","B":"J","D":"B","E":"D","G":"A","I":"F","K":"L","L":"K"},"ABDFHIKL":{"A":"H","B":"I","D":"B","E":"D","G":"A","I":"F","K":"L","L":"K"},"ABDFHIJL":{"A":"H","B":"J","D":"B","E":"D","G":"A","I":"F","K":"L","L":"I"},"ABDFHIJK":{"A":"H","B":"J","D":"B","E":"D","G":"A","I":"F","K":"I","L":"K"},"ABDFGJKL":{"A":"F","B":"J","D":"B","E":"D","G":"A","I":"G","K":"L","L":"K"},"ABDFGIKL":{"A":"I","B":"G","D":"B","E":"D","G":"A","I":"F","K":"L","L":"K"},"ABDFGIJL":{"A":"F","B":"J","D":"B","E":"D","G":"A","I":"G","K":"L","L":"I"},"ABDFGIJK":{"A":"F","B":"J","D":"B","E":"D","G":"A","I":"G","K":"I","L":"K"},"ABDFGHKL":{"A":"H","B":"G","D":"B","E":"D","G":"A","I":"F","K":"L","L":"K"},"ABDFGHJL":{"A":"H","B":"G","D":"B","E":"D","G":"A","I":"F","K":"L","L":"J"},"ABDFGHJK":{"A":"H","B":"G","D":"B","E":"D","G":"A","I":"F","K":"J","L":"K"},"ABDFGHIL":{"A":"H","B":"G","D":"B","E":"D","G":"A","I":"F","K":"L","L":"I"},"ABDFGHIK":{"A":"H","B":"G","D":"B","E":"D","G":"A","I":"F","K":"I","L":"K"},"ABDFGHIJ":{"A":"H","B":"G","D":"B","E":"D","G":"A","I":"F","K":"I","L":"J"},"ABDEIJKL":{"A":"E","B":"J","D":"B","E":"A","G":"I","I":"D","K":"L","L":"K"},"ABDEHJKL":{"A":"E","B":"J","D":"B","E":"D","G":"A","I":"H","K":"L","L":"K"},"ABDEHIKL":{"A":"E","B":"I","D":"B","E":"D","G":"A","I":"H","K":"L","L":"K"},"ABDEHIJL":{"A":"E","B":"J","D":"B","E":"D","G":"A","I":"H","K":"L","L":"I"},"ABDEHIJK":{"A":"E","B":"J","D":"B","E":"D","G":"A","I":"H","K":"I","L":"K"},"ABDEGJKL":{"A":"E","B":"J","D":"B","E":"D","G":"A","I":"G","K":"L","L":"K"},"ABDEGIKL":{"A":"E","B":"G","D":"B","E":"A","G":"I","I":"D","K":"L","L":"K"},"ABDEGIJL":{"A":"E","B":"J","D":"B","E":"D","G":"A","I":"G","K":"L","L":"I"},"ABDEGIJK":{"A":"E","B":"J","D":"B","E":"D","G":"A","I":"G","K":"I","L":"K"},"ABDEGHKL":{"A":"E","B":"G","D":"B","E":"D","G":"A","I":"H","K":"L","L":"K"},"ABDEGHJL":{"A":"H","B":"J","D":"B","E":"D","G":"A","I":"G","K":"L","L":"E"},"ABDEGHJK":{"A":"H","B":"J","D":"B","E":"D","G":"A","I":"G","K":"E","L":"K"},"ABDEGHIL":{"A":"E","B":"G","D":"B","E":"D","G":"A","I":"H","K":"L","L":"I"},"ABDEGHIK":{"A":"E","B":"G","D":"B","E":"D","G":"A","I":"H","K":"I","L":"K"},"ABDEGHIJ":{"A":"H","B":"J","D":"B","E":"D","G":"A","I":"G","K":"E","L":"I"},"ABDEFJKL":{"A":"E","B":"J","D":"B","E":"D","G":"A","I":"F","K":"L","L":"K"},"ABDEFIKL":{"A":"E","B":"I","D":"B","E":"D","G":"A","I":"F","K":"L","L":"K"},"ABDEFIJL":{"A":"E","B":"J","D":"B","E":"D","G":"A","I":"F","K":"L","L":"I"},"ABDEFIJK":{"A":"E","B":"J","D":"B","E":"D","G":"A","I":"F","K":"I","L":"K"},"ABDEFHKL":{"A":"H","B":"E","D":"B","E":"D","G":"A","I":"F","K":"L","L":"K"},"ABDEFHJL":{"A":"H","B":"J","D":"B","E":"D","G":"A","I":"F","K":"L","L":"E"},"ABDEFHJK":{"A":"H","B":"J","D":"B","E":"D","G":"A","I":"F","K":"E","L":"K"},"ABDEFHIL":{"A":"H","B":"E","D":"B","E":"D","G":"A","I":"F","K":"L","L":"I"},"ABDEFHIK":{"A":"H","B":"E","D":"B","E":"D","G":"A","I":"F","K":"I","L":"K"},"ABDEFHIJ":{"A":"H","B":"J","D":"B","E":"D","G":"A","I":"F","K":"E","L":"I"},"ABDEFGKL":{"A":"E","B":"G","D":"B","E":"D","G":"A","I":"F","K":"L","L":"K"},"ABDEFGJL":{"A":"E","B":"G","D":"B","E":"D","G":"A","I":"F","K":"L","L":"J"},"ABDEFGJK":{"A":"E","B":"G","D":"B","E":"D","G":"A","I":"F","K":"J","L":"K"},"ABDEFGIL":{"A":"E","B":"G","D":"B","E":"D","G":"A","I":"F","K":"L","L":"I"},"ABDEFGIK":{"A":"E","B":"G","D":"B","E":"D","G":"A","I":"F","K":"I","L":"K"},"ABDEFGIJ":{"A":"E","B":"G","D":"B","E":"D","G":"A","I":"F","K":"I","L":"J"},"ABDEFGHL":{"A":"H","B":"G","D":"B","E":"D","G":"A","I":"F","K":"L","L":"E"},"ABDEFGHK":{"A":"H","B":"G","D":"B","E":"D","G":"A","I":"F","K":"E","L":"K"},"ABDEFGHJ":{"A":"H","B":"G","D":"B","E":"D","G":"A","I":"F","K":"E","L":"J"},"ABDEFGHI":{"A":"H","B":"G","D":"B","E":"D","G":"A","I":"F","K":"E","L":"I"},"ABCHIJKL":{"A":"I","B":"J","D":"B","E":"C","G":"A","I":"H","K":"L","L":"K"},"ABCGIJKL":{"A":"I","B":"J","D":"B","E":"C","G":"A","I":"G","K":"L","L":"K"},"ABCGHJKL":{"A":"H","B":"J","D":"B","E":"C","G":"A","I":"G","K":"L","L":"K"},"ABCGHIKL":{"A":"I","B":"G","D":"B","E":"C","G":"A","I":"H","K":"L","L":"K"},"ABCGHIJL":{"A":"H","B":"J","D":"B","E":"C","G":"A","I":"G","K":"L","L":"I"},"ABCGHIJK":{"A":"H","B":"J","D":"B","E":"C","G":"A","I":"G","K":"I","L":"K"},"ABCFIJKL":{"A":"I","B":"J","D":"B","E":"C","G":"A","I":"F","K":"L","L":"K"},"ABCFHJKL":{"A":"H","B":"J","D":"B","E":"C","G":"A","I":"F","K":"L","L":"K"},"ABCFHIKL":{"A":"H","B":"I","D":"B","E":"C","G":"A","I":"F","K":"L","L":"K"},"ABCFHIJL":{"A":"H","B":"J","D":"B","E":"C","G":"A","I":"F","K":"L","L":"I"},"ABCFHIJK":{"A":"H","B":"J","D":"B","E":"C","G":"A","I":"F","K":"I","L":"K"},"ABCFGJKL":{"A":"C","B":"J","D":"B","E":"F","G":"A","I":"G","K":"L","L":"K"},"ABCFGIKL":{"A":"I","B":"G","D":"B","E":"C","G":"A","I":"F","K":"L","L":"K"},"ABCFGIJL":{"A":"C","B":"J","D":"B","E":"F","G":"A","I":"G","K":"L","L":"I"},"ABCFGIJK":{"A":"C","B":"J","D":"B","E":"F","G":"A","I":"G","K":"I","L":"K"},"ABCFGHKL":{"A":"H","B":"G","D":"B","E":"C","G":"A","I":"F","K":"L","L":"K"},"ABCFGHJL":{"A":"H","B":"G","D":"B","E":"C","G":"A","I":"F","K":"L","L":"J"},"ABCFGHJK":{"A":"H","B":"G","D":"B","E":"C","G":"A","I":"F","K":"J","L":"K"},"ABCFGHIL":{"A":"H","B":"G","D":"B","E":"C","G":"A","I":"F","K":"L","L":"I"},"ABCFGHIK":{"A":"H","B":"G","D":"B","E":"C","G":"A","I":"F","K":"I","L":"K"},"ABCFGHIJ":{"A":"H","B":"G","D":"B","E":"C","G":"A","I":"F","K":"I","L":"J"},"ABCEIJKL":{"A":"E","B":"J","D":"B","E":"A","G":"I","I":"C","K":"L","L":"K"},"ABCEHJKL":{"A":"E","B":"J","D":"B","E":"C","G":"A","I":"H","K":"L","L":"K"},"ABCEHIKL":{"A":"E","B":"I","D":"B","E":"C","G":"A","I":"H","K":"L","L":"K"},"ABCEHIJL":{"A":"E","B":"J","D":"B","E":"C","G":"A","I":"H","K":"L","L":"I"},"ABCEHIJK":{"A":"E","B":"J","D":"B","E":"C","G":"A","I":"H","K":"I","L":"K"},"ABCEGJKL":{"A":"E","B":"J","D":"B","E":"C","G":"A","I":"G","K":"L","L":"K"},"ABCEGIKL":{"A":"E","B":"G","D":"B","E":"A","G":"I","I":"C","K":"L","L":"K"},"ABCEGIJL":{"A":"E","B":"J","D":"B","E":"C","G":"A","I":"G","K":"L","L":"I"},"ABCEGIJK":{"A":"E","B":"J","D":"B","E":"C","G":"A","I":"G","K":"I","L":"K"},"ABCEGHKL":{"A":"E","B":"G","D":"B","E":"C","G":"A","I":"H","K":"L","L":"K"},"ABCEGHJL":{"A":"H","B":"J","D":"B","E":"C","G":"A","I":"G","K":"L","L":"E"},"ABCEGHJK":{"A":"H","B":"J","D":"B","E":"C","G":"A","I":"G","K":"E","L":"K"},"ABCEGHIL":{"A":"E","B":"G","D":"B","E":"C","G":"A","I":"H","K":"L","L":"I"},"ABCEGHIK":{"A":"E","B":"G","D":"B","E":"C","G":"A","I":"H","K":"I","L":"K"},"ABCEGHIJ":{"A":"H","B":"J","D":"B","E":"C","G":"A","I":"G","K":"E","L":"I"},"ABCEFJKL":{"A":"E","B":"J","D":"B","E":"C","G":"A","I":"F","K":"L","L":"K"},"ABCEFIKL":{"A":"E","B":"I","D":"B","E":"C","G":"A","I":"F","K":"L","L":"K"},"ABCEFIJL":{"A":"E","B":"J","D":"B","E":"C","G":"A","I":"F","K":"L","L":"I"},"ABCEFIJK":{"A":"E","B":"J","D":"B","E":"C","G":"A","I":"F","K":"I","L":"K"},"ABCEFHKL":{"A":"H","B":"E","D":"B","E":"C","G":"A","I":"F","K":"L","L":"K"},"ABCEFHJL":{"A":"H","B":"J","D":"B","E":"C","G":"A","I":"F","K":"L","L":"E"},"ABCEFHJK":{"A":"H","B":"J","D":"B","E":"C","G":"A","I":"F","K":"E","L":"K"},"ABCEFHIL":{"A":"H","B":"E","D":"B","E":"C","G":"A","I":"F","K":"L","L":"I"},"ABCEFHIK":{"A":"H","B":"E","D":"B","E":"C","G":"A","I":"F","K":"I","L":"K"},"ABCEFHIJ":{"A":"H","B":"J","D":"B","E":"C","G":"A","I":"F","K":"E","L":"I"},"ABCEFGKL":{"A":"E","B":"G","D":"B","E":"C","G":"A","I":"F","K":"L","L":"K"},"ABCEFGJL":{"A":"E","B":"G","D":"B","E":"C","G":"A","I":"F","K":"L","L":"J"},"ABCEFGJK":{"A":"E","B":"G","D":"B","E":"C","G":"A","I":"F","K":"J","L":"K"},"ABCEFGIL":{"A":"E","B":"G","D":"B","E":"C","G":"A","I":"F","K":"L","L":"I"},"ABCEFGIK":{"A":"E","B":"G","D":"B","E":"C","G":"A","I":"F","K":"I","L":"K"},"ABCEFGIJ":{"A":"E","B":"G","D":"B","E":"C","G":"A","I":"F","K":"I","L":"J"},"ABCEFGHL":{"A":"H","B":"G","D":"B","E":"C","G":"A","I":"F","K":"L","L":"E"},"ABCEFGHK":{"A":"H","B":"G","D":"B","E":"C","G":"A","I":"F","K":"E","L":"K"},"ABCEFGHJ":{"A":"H","B":"G","D":"B","E":"C","G":"A","I":"F","K":"E","L":"J"},"ABCEFGHI":{"A":"H","B":"G","D":"B","E":"C","G":"A","I":"F","K":"E","L":"I"},"ABCDIJKL":{"A":"I","B":"J","D":"B","E":"C","G":"A","I":"D","K":"L","L":"K"},"ABCDHJKL":{"A":"H","B":"J","D":"B","E":"C","G":"A","I":"D","K":"L","L":"K"},"ABCDHIKL":{"A":"H","B":"I","D":"B","E":"C","G":"A","I":"D","K":"L","L":"K"},"ABCDHIJL":{"A":"H","B":"J","D":"B","E":"C","G":"A","I":"D","K":"L","L":"I"},"ABCDHIJK":{"A":"H","B":"J","D":"B","E":"C","G":"A","I":"D","K":"I","L":"K"},"ABCDGJKL":{"A":"C","B":"J","D":"B","E":"D","G":"A","I":"G","K":"L","L":"K"},"ABCDGIKL":{"A":"I","B":"G","D":"B","E":"C","G":"A","I":"D","K":"L","L":"K"},"ABCDGIJL":{"A":"C","B":"J","D":"B","E":"D","G":"A","I":"G","K":"L","L":"I"},"ABCDGIJK":{"A":"C","B":"J","D":"B","E":"D","G":"A","I":"G","K":"I","L":"K"},"ABCDGHKL":{"A":"H","B":"G","D":"B","E":"C","G":"A","I":"D","K":"L","L":"K"},"ABCDGHJL":{"A":"H","B":"G","D":"B","E":"C","G":"A","I":"D","K":"L","L":"J"},"ABCDGHJK":{"A":"H","B":"G","D":"B","E":"C","G":"A","I":"D","K":"J","L":"K"},"ABCDGHIL":{"A":"H","B":"G","D":"B","E":"C","G":"A","I":"D","K":"L","L":"I"},"ABCDGHIK":{"A":"H","B":"G","D":"B","E":"C","G":"A","I":"D","K":"I","L":"K"},"ABCDGHIJ":{"A":"H","B":"G","D":"B","E":"C","G":"A","I":"D","K":"I","L":"J"},"ABCDFJKL":{"A":"C","B":"J","D":"B","E":"D","G":"A","I":"F","K":"L","L":"K"},"ABCDFIKL":{"A":"C","B":"I","D":"B","E":"D","G":"A","I":"F","K":"L","L":"K"},"ABCDFIJL":{"A":"C","B":"J","D":"B","E":"D","G":"A","I":"F","K":"L","L":"I"},"ABCDFIJK":{"A":"C","B":"J","D":"B","E":"D","G":"A","I":"F","K":"I","L":"K"},"ABCDFHKL":{"A":"H","B":"F","D":"B","E":"C","G":"A","I":"D","K":"L","L":"K"},"ABCDFHJL":{"A":"C","B":"J","D":"B","E":"D","G":"A","I":"F","K":"L","L":"H"},"ABCDFHJK":{"A":"H","B":"J","D":"B","E":"C","G":"A","I":"F","K":"D","L":"K"},"ABCDFHIL":{"A":"H","B":"F","D":"B","E":"C","G":"A","I":"D","K":"L","L":"I"},"ABCDFHIK":{"A":"H","B":"F","D":"B","E":"C","G":"A","I":"D","K":"I","L":"K"},"ABCDFHIJ":{"A":"H","B":"J","D":"B","E":"C","G":"A","I":"F","K":"D","L":"I"},"ABCDFGKL":{"A":"C","B":"G","D":"B","E":"D","G":"A","I":"F","K":"L","L":"K"},"ABCDFGJL":{"A":"C","B":"G","D":"B","E":"D","G":"A","I":"F","K":"L","L":"J"},"ABCDFGJK":{"A":"C","B":"G","D":"B","E":"D","G":"A","I":"F","K":"J","L":"K"},"ABCDFGIL":{"A":"C","B":"G","D":"B","E":"D","G":"A","I":"F","K":"L","L":"I"},"ABCDFGIK":{"A":"C","B":"G","D":"B","E":"D","G":"A","I":"F","K":"I","L":"K"},"ABCDFGIJ":{"A":"C","B":"G","D":"B","E":"D","G":"A","I":"F","K":"I","L":"J"},"ABCDFGHL":{"A":"C","B":"G","D":"B","E":"D","G":"A","I":"F","K":"L","L":"H"},"ABCDFGHK":{"A":"H","B":"G","D":"B","E":"C","G":"A","I":"F","K":"D","L":"K"},"ABCDFGHJ":{"A":"H","B":"G","D":"B","E":"C","G":"A","I":"F","K":"D","L":"J"},"ABCDFGHI":{"A":"H","B":"G","D":"B","E":"C","G":"A","I":"F","K":"D","L":"I"},"ABCDEJKL":{"A":"E","B":"J","D":"B","E":"C","G":"A","I":"D","K":"L","L":"K"},"ABCDEIKL":{"A":"E","B":"I","D":"B","E":"C","G":"A","I":"D","K":"L","L":"K"},"ABCDEIJL":{"A":"E","B":"J","D":"B","E":"C","G":"A","I":"D","K":"L","L":"I"},"ABCDEIJK":{"A":"E","B":"J","D":"B","E":"C","G":"A","I":"D","K":"I","L":"K"},"ABCDEHKL":{"A":"H","B":"E","D":"B","E":"C","G":"A","I":"D","K":"L","L":"K"},"ABCDEHJL":{"A":"H","B":"J","D":"B","E":"C","G":"A","I":"D","K":"L","L":"E"},"ABCDEHJK":{"A":"H","B":"J","D":"B","E":"C","G":"A","I":"D","K":"E","L":"K"},"ABCDEHIL":{"A":"H","B":"E","D":"B","E":"C","G":"A","I":"D","K":"L","L":"I"},"ABCDEHIK":{"A":"H","B":"E","D":"B","E":"C","G":"A","I":"D","K":"I","L":"K"},"ABCDEHIJ":{"A":"H","B":"J","D":"B","E":"C","G":"A","I":"D","K":"E","L":"I"},"ABCDEGKL":{"A":"E","B":"G","D":"B","E":"C","G":"A","I":"D","K":"L","L":"K"},"ABCDEGJL":{"A":"E","B":"G","D":"B","E":"C","G":"A","I":"D","K":"L","L":"J"},"ABCDEGJK":{"A":"E","B":"G","D":"B","E":"C","G":"A","I":"D","K":"J","L":"K"},"ABCDEGIL":{"A":"E","B":"G","D":"B","E":"C","G":"A","I":"D","K":"L","L":"I"},"ABCDEGIK":{"A":"E","B":"G","D":"B","E":"C","G":"A","I":"D","K":"I","L":"K"},"ABCDEGIJ":{"A":"E","B":"G","D":"B","E":"C","G":"A","I":"D","K":"I","L":"J"},"ABCDEGHL":{"A":"H","B":"G","D":"B","E":"C","G":"A","I":"D","K":"L","L":"E"},"ABCDEGHK":{"A":"H","B":"G","D":"B","E":"C","G":"A","I":"D","K":"E","L":"K"},"ABCDEGHJ":{"A":"H","B":"G","D":"B","E":"C","G":"A","I":"D","K":"E","L":"J"},"ABCDEGHI":{"A":"H","B":"G","D":"B","E":"C","G":"A","I":"D","K":"E","L":"I"},"ABCDEFKL":{"A":"C","B":"E","D":"B","E":"D","G":"A","I":"F","K":"L","L":"K"},"ABCDEFJL":{"A":"C","B":"J","D":"B","E":"D","G":"A","I":"F","K":"L","L":"E"},"ABCDEFJK":{"A":"C","B":"J","D":"B","E":"D","G":"A","I":"F","K":"E","L":"K"},"ABCDEFIL":{"A":"C","B":"E","D":"B","E":"D","G":"A","I":"F","K":"L","L":"I"},"ABCDEFIK":{"A":"C","B":"E","D":"B","E":"D","G":"A","I":"F","K":"I","L":"K"},"ABCDEFIJ":{"A":"C","B":"J","D":"B","E":"D","G":"A","I":"F","K":"E","L":"I"},"ABCDEFHL":{"A":"H","B":"F","D":"B","E":"C","G":"A","I":"D","K":"L","L":"E"},"ABCDEFHK":{"A":"H","B":"E","D":"B","E":"C","G":"A","I":"F","K":"D","L":"K"},"ABCDEFHJ":{"A":"H","B":"J","D":"B","E":"C","G":"A","I":"F","K":"D","L":"E"},"ABCDEFHI":{"A":"H","B":"E","D":"B","E":"C","G":"A","I":"F","K":"D","L":"I"},"ABCDEFGL":{"A":"C","B":"G","D":"B","E":"D","G":"A","I":"F","K":"L","L":"E"},"ABCDEFGK":{"A":"C","B":"G","D":"B","E":"D","G":"A","I":"F","K":"E","L":"K"},"ABCDEFGJ":{"A":"C","B":"G","D":"B","E":"D","G":"A","I":"F","K":"E","L":"J"},"ABCDEFGI":{"A":"C","B":"G","D":"B","E":"D","G":"A","I":"F","K":"E","L":"I"},"ABCDEFGH":{"A":"H","B":"G","D":"B","E":"C","G":"A","I":"F","K":"D","L":"E"}},"GROUPS":{"A":["Mexico","Korea Republic","Czechia","South Africa"],"B":["Canada","Switzerland","Bosnia and Herzegovina","Qatar"],"C":["Brazil","Morocco","Scotland","Haiti"],"D":["USA","Australia","Paraguay","Türkiye"],"E":["Germany","Côte d'Ivoire","Ecuador","Curaçao"],"F":["Netherlands","Japan","Sweden","Tunisia"],"G":["Belgium","Egypt","Iran","New Zealand"],"H":["Spain","Cabo Verde","Saudi Arabia","Uruguay"],"I":["France","Norway","Senegal","Iraq"],"J":["Argentina","Austria","Algeria","Jordan"],"K":["Colombia","Portugal","Congo DR","Uzbekistan"],"L":["England","Ghana","Croatia","Panama"]},"RANK":{"Spain":1,"Argentina":2,"France":3,"England":4,"Brazil":5,"Portugal":6,"Netherlands":7,"Belgium":8,"Germany":9,"Croatia":10,"Morocco":11,"Colombia":13,"Uruguay":14,"Mexico":15,"Switzerland":16,"USA":17,"Japan":18,"Senegal":19,"Iran":20,"Korea Republic":22,"Ecuador":23,"Austria":25,"Australia":26,"Sweden":27,"Canada":28,"Panama":30,"Egypt":32,"Norway":33,"Côte d'Ivoire":34,"Scotland":35,"Paraguay":36,"Algeria":37,"Tunisia":38,"Czechia":44,"Qatar":45,"Uzbekistan":54,"Congo DR":56,"Iraq":58,"Saudi Arabia":59,"South Africa":61,"Jordan":64,"Cabo Verde":70,"Ghana":73,"Bosnia and Herzegovina":74,"Curaçao":82,"Haiti":83,"New Zealand":86},"FIX":[{"id":0,"g":"A","h":"Mexico","a":"South Africa","hs":2,"as":0,"md":1,"played":true},{"id":1,"g":"A","h":"Korea Republic","a":"Czechia","hs":2,"as":1,"md":1,"played":true},{"id":2,"g":"A","h":"Czechia","a":"South Africa","hs":1,"as":1,"md":2,"played":true},{"id":3,"g":"A","h":"Mexico","a":"Korea Republic","hs":1,"as":0,"md":2,"played":true},{"id":4,"g":"A","h":"Czechia","a":"Mexico","hs":null,"as":null,"md":3,"played":false},{"id":5,"g":"A","h":"South Africa","a":"Korea Republic","hs":null,"as":null,"md":3,"played":false},{"id":6,"g":"B","h":"Canada","a":"Bosnia and Herzegovina","hs":1,"as":1,"md":1,"played":true},{"id":7,"g":"B","h":"Switzerland","a":"Qatar","hs":1,"as":1,"md":1,"played":true},{"id":8,"g":"B","h":"Switzerland","a":"Bosnia and Herzegovina","hs":4,"as":1,"md":2,"played":true},{"id":9,"g":"B","h":"Canada","a":"Qatar","hs":6,"as":0,"md":2,"played":true},{"id":10,"g":"B","h":"Switzerland","a":"Canada","hs":null,"as":null,"md":3,"played":false},{"id":11,"g":"B","h":"Bosnia and Herzegovina","a":"Qatar","hs":null,"as":null,"md":3,"played":false},{"id":12,"g":"C","h":"Brazil","a":"Morocco","hs":1,"as":1,"md":1,"played":true},{"id":13,"g":"C","h":"Scotland","a":"Haiti","hs":1,"as":0,"md":1,"played":true},{"id":14,"g":"C","h":"Scotland","a":"Morocco","hs":0,"as":1,"md":2,"played":true},{"id":15,"g":"C","h":"Brazil","a":"Haiti","hs":3,"as":0,"md":2,"played":true},{"id":16,"g":"C","h":"Scotland","a":"Brazil","hs":null,"as":null,"md":3,"played":false},{"id":17,"g":"C","h":"Morocco","a":"Haiti","hs":null,"as":null,"md":3,"played":false},{"id":18,"g":"D","h":"USA","a":"Paraguay","hs":4,"as":1,"md":1,"played":true},{"id":19,"g":"D","h":"Australia","a":"Türkiye","hs":2,"as":0,"md":1,"played":true},{"id":20,"g":"D","h":"USA","a":"Australia","hs":2,"as":0,"md":2,"played":true},{"id":21,"g":"D","h":"Türkiye","a":"Paraguay","hs":0,"as":1,"md":2,"played":true},{"id":22,"g":"D","h":"Türkiye","a":"USA","hs":null,"as":null,"md":3,"played":false},{"id":23,"g":"D","h":"Paraguay","a":"Australia","hs":null,"as":null,"md":3,"played":false},{"id":24,"g":"E","h":"Germany","a":"Curaçao","hs":7,"as":1,"md":1,"played":true},{"id":25,"g":"E","h":"Côte d'Ivoire","a":"Ecuador","hs":1,"as":0,"md":1,"played":true},{"id":26,"g":"E","h":"Germany","a":"Côte d'Ivoire","hs":2,"as":1,"md":2,"played":true},{"id":27,"g":"E","h":"Ecuador","a":"Curaçao","hs":0,"as":0,"md":2,"played":true},{"id":28,"g":"E","h":"Curaçao","a":"Côte d'Ivoire","hs":null,"as":null,"md":3,"played":false},{"id":29,"g":"E","h":"Ecuador","a":"Germany","hs":null,"as":null,"md":3,"played":false},{"id":30,"g":"F","h":"Netherlands","a":"Japan","hs":2,"as":2,"md":1,"played":true},{"id":31,"g":"F","h":"Sweden","a":"Tunisia","hs":5,"as":1,"md":1,"played":true},{"id":32,"g":"F","h":"Netherlands","a":"Sweden","hs":5,"as":1,"md":2,"played":true},{"id":33,"g":"F","h":"Tunisia","a":"Japan","hs":0,"as":4,"md":2,"played":true},{"id":34,"g":"F","h":"Japan","a":"Sweden","hs":null,"as":null,"md":3,"played":false},{"id":35,"g":"F","h":"Tunisia","a":"Netherlands","hs":null,"as":null,"md":3,"played":false},{"id":36,"g":"G","h":"Belgium","a":"Egypt","hs":1,"as":1,"md":1,"played":true},{"id":37,"g":"G","h":"Iran","a":"New Zealand","hs":2,"as":2,"md":1,"played":true},{"id":38,"g":"G","h":"Belgium","a":"Iran","hs":0,"as":0,"md":2,"played":true},{"id":39,"g":"G","h":"New Zealand","a":"Egypt","hs":1,"as":3,"md":2,"played":true},{"id":40,"g":"G","h":"Egypt","a":"Iran","hs":null,"as":null,"md":3,"played":false},{"id":41,"g":"G","h":"New Zealand","a":"Belgium","hs":null,"as":null,"md":3,"played":false},{"id":42,"g":"H","h":"Spain","a":"Cabo Verde","hs":0,"as":0,"md":1,"played":true},{"id":43,"g":"H","h":"Saudi Arabia","a":"Uruguay","hs":1,"as":1,"md":1,"played":true},{"id":44,"g":"H","h":"Spain","a":"Saudi Arabia","hs":4,"as":0,"md":2,"played":true},{"id":45,"g":"H","h":"Uruguay","a":"Cabo Verde","hs":2,"as":2,"md":2,"played":true},{"id":46,"g":"H","h":"Cabo Verde","a":"Saudi Arabia","hs":null,"as":null,"md":3,"played":false},{"id":47,"g":"H","h":"Uruguay","a":"Spain","hs":null,"as":null,"md":3,"played":false},{"id":48,"g":"I","h":"France","a":"Senegal","hs":3,"as":1,"md":1,"played":true},{"id":49,"g":"I","h":"Norway","a":"Iraq","hs":4,"as":1,"md":1,"played":true},{"id":50,"g":"I","h":"France","a":"Iraq","hs":3,"as":0,"md":2,"played":true},{"id":51,"g":"I","h":"Norway","a":"Senegal","hs":3,"as":2,"md":2,"played":true},{"id":52,"g":"I","h":"Norway","a":"France","hs":null,"as":null,"md":3,"played":false},{"id":53,"g":"I","h":"Senegal","a":"Iraq","hs":null,"as":null,"md":3,"played":false},{"id":54,"g":"J","h":"Argentina","a":"Algeria","hs":3,"as":0,"md":1,"played":true},{"id":55,"g":"J","h":"Austria","a":"Jordan","hs":3,"as":1,"md":1,"played":true},{"id":56,"g":"J","h":"Argentina","a":"Austria","hs":1,"as":0,"md":2,"played":true},{"id":57,"g":"J","h":"Jordan","a":"Algeria","hs":1,"as":2,"md":2,"played":true},{"id":58,"g":"J","h":"Jordan","a":"Argentina","hs":null,"as":null,"md":3,"played":false},{"id":59,"g":"J","h":"Algeria","a":"Austria","hs":null,"as":null,"md":3,"played":false},{"id":60,"g":"K","h":"Portugal","a":"Congo DR","hs":1,"as":1,"md":1,"played":true},{"id":61,"g":"K","h":"Colombia","a":"Uzbekistan","hs":3,"as":1,"md":1,"played":true},{"id":62,"g":"K","h":"Portugal","a":"Uzbekistan","hs":null,"as":null,"md":2,"played":false},{"id":63,"g":"K","h":"Colombia","a":"Congo DR","hs":null,"as":null,"md":2,"played":false},{"id":64,"g":"K","h":"Colombia","a":"Portugal","hs":null,"as":null,"md":3,"played":false},{"id":65,"g":"K","h":"Congo DR","a":"Uzbekistan","hs":null,"as":null,"md":3,"played":false},{"id":66,"g":"L","h":"England","a":"Croatia","hs":4,"as":2,"md":1,"played":true},{"id":67,"g":"L","h":"Ghana","a":"Panama","hs":1,"as":0,"md":1,"played":true},{"id":68,"g":"L","h":"England","a":"Ghana","hs":null,"as":null,"md":2,"played":false},{"id":69,"g":"L","h":"Panama","a":"Croatia","hs":null,"as":null,"md":2,"played":false},{"id":70,"g":"L","h":"Panama","a":"England","hs":null,"as":null,"md":3,"played":false},{"id":71,"g":"L","h":"Croatia","a":"Ghana","hs":null,"as":null,"md":3,"played":false}],"R32":[{"id":73,"a":{"t":"pos","pos":2,"g":"A"},"b":{"t":"pos","pos":2,"g":"B"}},{"id":74,"a":{"t":"pos","pos":1,"g":"E"},"b":{"t":"third","slot":"E"}},{"id":75,"a":{"t":"pos","pos":1,"g":"F"},"b":{"t":"pos","pos":2,"g":"C"}},{"id":76,"a":{"t":"pos","pos":1,"g":"C"},"b":{"t":"pos","pos":2,"g":"F"}},{"id":77,"a":{"t":"pos","pos":1,"g":"I"},"b":{"t":"third","slot":"I"}},{"id":78,"a":{"t":"pos","pos":2,"g":"E"},"b":{"t":"pos","pos":2,"g":"I"}},{"id":79,"a":{"t":"pos","pos":1,"g":"A"},"b":{"t":"third","slot":"A"}},{"id":80,"a":{"t":"pos","pos":1,"g":"L"},"b":{"t":"third","slot":"L"}},{"id":81,"a":{"t":"pos","pos":1,"g":"D"},"b":{"t":"third","slot":"D"}},{"id":82,"a":{"t":"pos","pos":1,"g":"G"},"b":{"t":"third","slot":"G"}},{"id":83,"a":{"t":"pos","pos":2,"g":"K"},"b":{"t":"pos","pos":2,"g":"L"}},{"id":84,"a":{"t":"pos","pos":1,"g":"H"},"b":{"t":"pos","pos":2,"g":"J"}},{"id":85,"a":{"t":"pos","pos":1,"g":"B"},"b":{"t":"third","slot":"B"}},{"id":86,"a":{"t":"pos","pos":1,"g":"J"},"b":{"t":"pos","pos":2,"g":"H"}},{"id":87,"a":{"t":"pos","pos":1,"g":"K"},"b":{"t":"third","slot":"K"}},{"id":88,"a":{"t":"pos","pos":2,"g":"D"},"b":{"t":"pos","pos":2,"g":"G"}}],"KO":[{"id":89,"round":"R16","a":{"win":74},"b":{"win":77}},{"id":90,"round":"R16","a":{"win":73},"b":{"win":75}},{"id":91,"round":"R16","a":{"win":76},"b":{"win":78}},{"id":92,"round":"R16","a":{"win":79},"b":{"win":80}},{"id":93,"round":"R16","a":{"win":83},"b":{"win":84}},{"id":94,"round":"R16","a":{"win":81},"b":{"win":82}},{"id":95,"round":"R16","a":{"win":86},"b":{"win":88}},{"id":96,"round":"R16","a":{"win":85},"b":{"win":87}},{"id":97,"round":"QF","a":{"win":89},"b":{"win":90}},{"id":98,"round":"QF","a":{"win":93},"b":{"win":94}},{"id":99,"round":"QF","a":{"win":91},"b":{"win":92}},{"id":100,"round":"QF","a":{"win":95},"b":{"win":96}},{"id":101,"round":"SF","a":{"win":97},"b":{"win":98}},{"id":102,"round":"SF","a":{"win":99},"b":{"win":100}},{"id":104,"round":"FINAL","a":{"win":101},"b":{"win":102}}],"ORDER":{"R32":[74,77,73,75,83,84,81,82,76,78,79,80,86,88,85,87],"R16":[89,90,93,94,91,92,95,96],"QF":[97,98,99,100],"SF":[101,102],"FINAL":[104]}}
 </script>
+<script id="schedule-snapshot" type="application/json">{"games":[{"id":"1","local_date":"06/11/2026 13:00","type":"group","group":"A","stadium_id":"1"},{"id":"2","local_date":"06/11/2026 20:00","type":"group","group":"A","stadium_id":"2"},{"id":"3","local_date":"06/12/2026 15:00","type":"group","group":"B","stadium_id":"12"},{"id":"4","local_date":"06/12/2026 18:00","type":"group","group":"D","stadium_id":"16"},{"id":"5","local_date":"06/13/2026 21:00","type":"group","group":"C","stadium_id":"9"},{"id":"6","local_date":"06/13/2026 21:00","type":"group","group":"D","stadium_id":"13"},{"id":"7","local_date":"06/13/2026 18:00","type":"group","group":"C","stadium_id":"11"},{"id":"8","local_date":"06/13/2026 12:00","type":"group","group":"B","stadium_id":"15"},{"id":"9","local_date":"06/14/2026 19:00","type":"group","group":"E","stadium_id":"10"},{"id":"10","local_date":"06/14/2026 12:00","type":"group","group":"E","stadium_id":"5"},{"id":"11","local_date":"06/14/2026 15:00","type":"group","group":"F","stadium_id":"4"},{"id":"12","local_date":"06/14/2026 20:00","type":"group","group":"F","stadium_id":"3"},{"id":"13","local_date":"06/15/2026 18:00","type":"group","group":"G","stadium_id":"16"},{"id":"14","local_date":"06/15/2026 12:00","type":"group","group":"H","stadium_id":"7"},{"id":"15","local_date":"06/15/2026 12:00","type":"group","group":"G","stadium_id":"14"},{"id":"16","local_date":"06/15/2026 18:00","type":"group","group":"H","stadium_id":"8"},{"id":"17","local_date":"06/16/2026 15:00","type":"group","group":"I","stadium_id":"11"},{"id":"18","local_date":"06/16/2026 18:00","type":"group","group":"I","stadium_id":"9"},{"id":"19","local_date":"06/16/2026 20:00","type":"group","group":"J","stadium_id":"6"},{"id":"20","local_date":"06/16/2026 21:00","type":"group","group":"J","stadium_id":"15"},{"id":"21","local_date":"06/17/2026 12:00","type":"group","group":"K","stadium_id":"5"},{"id":"22","local_date":"06/17/2026 15:00","type":"group","group":"L","stadium_id":"4"},{"id":"23","local_date":"06/17/2026 20:00","type":"group","group":"K","stadium_id":"1"},{"id":"24","local_date":"06/17/2026 19:00","type":"group","group":"L","stadium_id":"12"},{"id":"25","local_date":"06/18/2026 19:00","type":"group","group":"A","stadium_id":"2"},{"id":"26","local_date":"06/18/2026 12:00","type":"group","group":"B","stadium_id":"16"},{"id":"27","local_date":"06/18/2026 15:00","type":"group","group":"B","stadium_id":"13"},{"id":"28","local_date":"06/18/2026 12:00","type":"group","group":"A","stadium_id":"7"},{"id":"29","local_date":"06/19/2026 21:00","type":"group","group":"C","stadium_id":"10"},{"id":"30","local_date":"06/19/2026 18:00","type":"group","group":"C","stadium_id":"9"},{"id":"31","local_date":"06/19/2026 12:00","type":"group","group":"D","stadium_id":"14"},{"id":"32","local_date":"06/19/2026 20:00","type":"group","group":"D","stadium_id":"15"},{"id":"33","local_date":"06/20/2026 16:00","type":"group","group":"E","stadium_id":"12"},{"id":"34","local_date":"06/20/2026 19:00","type":"group","group":"E","stadium_id":"6"},{"id":"35","local_date":"06/20/2026 12:00","type":"group","group":"F","stadium_id":"5"},{"id":"36","local_date":"06/20/2026 22:00","type":"group","group":"F","stadium_id":"3"},{"id":"37","local_date":"06/21/2026 12:00","type":"group","group":"G","stadium_id":"16"},{"id":"38","local_date":"06/21/2026 18:00","type":"group","group":"G","stadium_id":"13"},{"id":"39","local_date":"06/21/2026 12:00","type":"group","group":"H","stadium_id":"7"},{"id":"40","local_date":"06/21/2026 18:00","type":"group","group":"H","stadium_id":"8"},{"id":"41","local_date":"06/22/2026 17:00","type":"group","group":"I","stadium_id":"10"},{"id":"42","local_date":"06/22/2026 20:00","type":"group","group":"I","stadium_id":"11"},{"id":"43","local_date":"06/22/2026 12:00","type":"group","group":"J","stadium_id":"4"},{"id":"44","local_date":"06/22/2026 20:00","type":"group","group":"J","stadium_id":"15"},{"id":"45","local_date":"06/23/2026 12:00","type":"group","group":"K","stadium_id":"5"},{"id":"46","local_date":"06/23/2026 19:00","type":"group","group":"L","stadium_id":"12"},{"id":"47","local_date":"06/23/2026 20:00","type":"group","group":"K","stadium_id":"2"},{"id":"48","local_date":"06/23/2026 16:00","type":"group","group":"L","stadium_id":"9"},{"id":"49","local_date":"06/24/2026 18:00","type":"group","group":"C","stadium_id":"8"},{"id":"50","local_date":"06/24/2026 18:00","type":"group","group":"C","stadium_id":"7"},{"id":"51","local_date":"06/24/2026 19:00","type":"group","group":"A","stadium_id":"3"},{"id":"52","local_date":"06/24/2026 19:00","type":"group","group":"A","stadium_id":"1"},{"id":"53","local_date":"06/24/2026 12:00","type":"group","group":"B","stadium_id":"14"},{"id":"54","local_date":"06/24/2026 12:00","type":"group","group":"B","stadium_id":"13"},{"id":"55","local_date":"06/25/2026 16:00","type":"group","group":"E","stadium_id":"10"},{"id":"56","local_date":"06/25/2026 16:00","type":"group","group":"E","stadium_id":"11"},{"id":"57","local_date":"06/25/2026 19:00","type":"group","group":"D","stadium_id":"15"},{"id":"58","local_date":"06/25/2026 19:00","type":"group","group":"D","stadium_id":"16"},{"id":"59","local_date":"06/25/2026 18:00","type":"group","group":"F","stadium_id":"4"},{"id":"60","local_date":"06/25/2026 18:00","type":"group","group":"F","stadium_id":"6"},{"id":"61","local_date":"06/26/2026 15:00","type":"group","group":"I","stadium_id":"12"},{"id":"62","local_date":"06/26/2026 15:00","type":"group","group":"I","stadium_id":"9"},{"id":"63","local_date":"06/26/2026 20:00","type":"group","group":"G","stadium_id":"14"},{"id":"64","local_date":"06/26/2026 20:00","type":"group","group":"G","stadium_id":"13"},{"id":"65","local_date":"06/26/2026 19:00","type":"group","group":"H","stadium_id":"5"},{"id":"66","local_date":"06/26/2026 18:00","type":"group","group":"H","stadium_id":"2"},{"id":"67","local_date":"06/27/2026 17:00","type":"group","group":"L","stadium_id":"11"},{"id":"68","local_date":"06/27/2026 17:00","type":"group","group":"L","stadium_id":"10"},{"id":"69","local_date":"06/27/2026 21:00","type":"group","group":"J","stadium_id":"6"},{"id":"70","local_date":"06/27/2026 21:00","type":"group","group":"J","stadium_id":"4"},{"id":"71","local_date":"06/27/2026 19:30","type":"group","group":"K","stadium_id":"8"},{"id":"72","local_date":"06/27/2026 19:30","type":"group","group":"K","stadium_id":"7"},{"id":"73","local_date":"06/28/2026 12:00","type":"r32","group":"R32","stadium_id":"16"},{"id":"74","local_date":"06/29/2026 16:30","type":"r32","group":"R32","stadium_id":"9"},{"id":"75","local_date":"06/29/2026 19:00","type":"r32","group":"R32","stadium_id":"3"},{"id":"76","local_date":"06/29/2026 12:00","type":"r32","group":"R32","stadium_id":"5"},{"id":"77","local_date":"06/30/2026 17:00","type":"r32","group":"R32","stadium_id":"11"},{"id":"78","local_date":"06/30/2026 12:00","type":"r32","group":"R32","stadium_id":"4"},{"id":"79","local_date":"06/30/2026 19:00","type":"r32","group":"R32","stadium_id":"1"},{"id":"80","local_date":"07/01/2026 12:00","type":"r32","group":"R32","stadium_id":"7"},{"id":"81","local_date":"07/01/2026 17:00","type":"r32","group":"R32","stadium_id":"15"},{"id":"82","local_date":"07/01/2026 13:00","type":"r32","group":"R32","stadium_id":"14"},{"id":"83","local_date":"07/02/2026 19:00","type":"r32","group":"R32","stadium_id":"12"},{"id":"84","local_date":"07/02/2026 12:00","type":"r32","group":"R32","stadium_id":"16"},{"id":"85","local_date":"07/02/2026 20:00","type":"r32","group":"R32","stadium_id":"13"},{"id":"86","local_date":"07/03/2026 18:00","type":"r32","group":"R32","stadium_id":"8"},{"id":"87","local_date":"07/03/2026 20:30","type":"r32","group":"R32","stadium_id":"6"},{"id":"88","local_date":"07/03/2026 13:00","type":"r32","group":"R32","stadium_id":"4"},{"id":"89","local_date":"07/04/2026 17:00","type":"r16","group":"R16","stadium_id":"10"},{"id":"90","local_date":"07/04/2026 12:00","type":"r16","group":"R16","stadium_id":"5"},{"id":"91","local_date":"07/05/2026 16:00","type":"r16","group":"R16","stadium_id":"11"},{"id":"92","local_date":"07/05/2026 18:00","type":"r16","group":"R16","stadium_id":"1"},{"id":"93","local_date":"07/06/2026 14:00","type":"r16","group":"R16","stadium_id":"4"},{"id":"94","local_date":"07/06/2026 17:00","type":"r16","group":"R16","stadium_id":"14"},{"id":"95","local_date":"07/07/2026 12:00","type":"r16","group":"R16","stadium_id":"7"},{"id":"96","local_date":"07/07/2026 13:00","type":"r16","group":"R16","stadium_id":"13"},{"id":"97","local_date":"07/09/2026 16:00","type":"qf","group":"QF","stadium_id":"9"},{"id":"98","local_date":"07/10/2026 12:00","type":"qf","group":"QF","stadium_id":"16"},{"id":"99","local_date":"07/11/2026 17:00","type":"qf","group":"QF","stadium_id":"8"},{"id":"100","local_date":"07/11/2026 20:00","type":"qf","group":"QF","stadium_id":"6"},{"id":"101","local_date":"07/14/2026 14:00","type":"sf","group":"SF","stadium_id":"4"},{"id":"102","local_date":"07/15/2026 15:00","type":"sf","group":"SF","stadium_id":"7"},{"id":"103","local_date":"07/18/2026 17:00","type":"third","group":"3RD","stadium_id":"8"},{"id":"104","local_date":"07/19/2026 15:00","type":"final","group":"FINAL","stadium_id":"11"}]}</script>
 <script src="src/wc-core.js"></script>
 <script>
 const D=JSON.parse(document.getElementById('data').textContent);
 const M=WC.createModel(D);
+// Bundled schedule so dates render offline; live fetch overwrites it.
+M.setSchedule(JSON.parse(document.getElementById('schedule-snapshot').textContent));
 const {RCLS,RNAME,RSHORT,RIDX,ORD,GL,FIX}=M;
 const results=M.state.results;
 
@@ -259,7 +332,12 @@ let S={A:'USA',B:'England',tab:'matchups'};
 // Bind the model's methods to the bare names the render functions use.
 const groupOf=M.groupOf,scenarios=M.scenarios,earliestAny=M.earliestAny,standings=M.standings,
       clinchedWinner=M.clinchedWinner,official=M.official,committed=M.committed,current=M.current,
-      fixtureStatus=M.fixtureStatus,teams=M.teams;
+      fixtureStatus=M.fixtureStatus,teams=M.teams,
+      scenariosWithDates=M.scenariosWithDates,earliestAnyWithDates=M.earliestAnyWithDates,
+      relevantGroups=M.relevantGroups;
+// Required-finish line, e.g. "USA 1st in Group D". All from the model.
+function finishLine(team,pos){const g=groupOf(team);return `${team} ${ORD[pos-1]} in Group ${g}`;}
+function dnode(d){return d||'Date TBD';}
 
 // ---- render ----
 const sb=id=>document.getElementById(id);
@@ -270,64 +348,160 @@ function renderPicker(){
  [['selA','A'],['selB','B']].forEach(([id,k])=>{sb(id).innerHTML=teams().map(t=>`<option ${S[k]===t?'selected':''}>${t}</option>`).join('');});
 }
 function renderVerdictStrip(){
- const e=earliestAny(S.A,S.B);
  sb('vsMu').innerHTML=`<span class="a">${S.A}</span><span class="x">vs</span><span class="b">${S.B}</span>`;
- const p=sb('vsPill');p.className='pill '+(e?RCLS[e.round]:'none');p.textContent=e?RNAME[e.round]:'—';
+ const el=sb('vsEarliest');
+ if(S.A===S.B){el.className='vs-earliest tbd';el.textContent='Pick two different teams';}
+ else{const e=earliestAnyWithDates(S.A,S.B);
+  if(!e){el.className='vs-earliest tbd';el.textContent='No top-two path';}
+  else{el.className='vs-earliest num';el.textContent=`Earliest: ${RSHORT[e.meetingRound]}, M${e.meetingMatchId}, ${dnode(e.meetingDateISO)}`;}}
  sb('vstrip').classList.toggle('show',S.tab==='matchups');
 }
+// Hero answer card — the primary output (section 8.4).
+function renderHero(){
+ const A=S.A,B=S.B,host=sb('hero');
+ if(A===B){host.innerHTML=`<div class="hero-card invalid"><div class="hero-mu"><span class="a">${A}</span> <span class="x">vs</span> <span class="b">${B}</span></div><p class="hero-status">Pick two different teams to see the earliest possible meeting.</p></div>`;return;}
+ const e=earliestAnyWithDates(A,B);
+ if(!e){host.innerHTML=`<div class="hero-card invalid"><div class="hero-mu"><span class="a">${A}</span> <span class="x">vs</span> <span class="b">${B}</span></div><p class="hero-status">No top-two path found. Open Group standings to explore third-place routes.</p></div>`;return;}
+ const fin=e.meetingRound==='FINAL';
+ host.innerHTML=`<div class="hero-card${fin?' is-final':''}">
+  <div class="hero-mu"><span class="a">${A}</span> <span class="x">vs</span> <span class="b">${B}</span></div>
+  <div class="hero-grid">
+   <div class="hero-field"><span class="hf-lbl">Earliest possible round</span><span class="hf-val round">${RNAME[e.meetingRound]}</span></div>
+   <div class="hero-field"><span class="hf-lbl">Match</span><span class="hf-val num">M${e.meetingMatchId}</span></div>
+   <div class="hero-field"><span class="hf-lbl">Date</span><span class="hf-val num">${dnode(e.meetingDateISO)}</span></div>
+  </div>
+  <div class="hero-req"><span class="hf-lbl">Required finish</span>
+   <span class="req-a">${finishLine(A,e.teamAFinish)}</span><span class="req-b">${finishLine(B,e.teamBFinish)}</span></div>
+  <p class="hero-status">Possible path, assuming both teams win through.</p>
+ </div>`;
+}
+// Map a PathStep round token to a class and short label.
+function matchNodeHTML(team,step){
+ const cls=RCLS[step.round];
+ return `<div class="mnode ${cls}">
+  <span class="mn-date num">${dnode(step.dateISO)}</span>
+  <span class="mn-round"><span class="rdot ${cls}" aria-hidden="true"></span><span class="rlabel">${RSHORT[step.round]}</span> <span class="mn-id num">M${step.matchId}</span></span>
+  <span class="mn-teams">${team} <span class="mn-vs">vs</span> ${step.opponentLabel}</span>
+  <span class="mn-state" data-state="${step.status}">${step.status}</span>
+ </div>`;
+}
+function meetingNodeHTML(scn){
+ return `<div class="meetnode">
+  <span class="meet-lbl">Meeting</span>
+  <span class="mn-date num">${dnode(scn.meetingDateISO)}</span>
+  <span class="meet-round">${RNAME[scn.meetingRound]} <span class="mn-id num">&middot; M${scn.meetingMatchId}</span></span>
+  <span class="meet-teams">${scn.teamA} <span class="mn-vs">vs</span> ${scn.teamB}</span>
+  <span class="mn-state meet-state">POSSIBLE</span>
+ </div>`;
+}
+// One scenario rendered as a two-lane convergence route (section 11).
+function routeCardHTML(scn,open){
+ const A=scn.teamA,B=scn.teamB;
+ // Lanes exclude the shared meeting node; it renders once, converged.
+ const laneA=scn.teamAPath.filter(s=>!s.isMeetingMatch);
+ const laneB=scn.teamBPath.filter(s=>!s.isMeetingMatch);
+ const head=`<summary class="scen-h"><span class="if">If</span><span class="fin"><span class="ta">${A} ${ORD[scn.teamAFinish-1]}</span> &amp; <span class="tb">${B} ${ORD[scn.teamBFinish-1]}</span></span>${pillHTML(scn.meetingRound)}</summary>`;
+ const lanes=`<div class="route">
+   <div class="lane lane-a"><div class="lane-t">${A} path</div>${laneA.map(s=>matchNodeHTML(A,s)).join('<div class="lane-link" aria-hidden="true"></div>')}</div>
+   <div class="lane lane-b"><div class="lane-t">${B} path</div>${laneB.map(s=>matchNodeHTML(B,s)).join('<div class="lane-link" aria-hidden="true"></div>')}</div>
+   <div class="converge">${meetingNodeHTML(scn)}</div>
+  </div>`;
+ return `<details class="scen"${open?' open':''}>${head}${lanes}</details>`;
+}
 function renderScenarios(){
- const A=S.A,B=S.B,ga=groupOf(A),gb=groupOf(B),e=earliestAny(A,B),scs=scenarios(A,B),bl=sb('bottomline');
- if(A===B){bl.innerHTML='Pick two different teams.';sb('scens').innerHTML='';return;}
- if(!e){bl.innerHTML=`<b>${A}</b> and <b>${B}</b> only meet in the final in the finishes shown.`;}
- else{const need=e.pa===1&&e.pb===1?'both win their groups':`${A} finishes ${ORD[e.pa-1]} and ${B} finishes ${ORD[e.pb-1]}`;
-  bl.innerHTML=`Soonest they can meet: <b>${RNAME[e.round]}</b>${e.round==='FINAL'?'':' (M'+e.meet+')'} &mdash; if <b>${need}</b>.${ga===gb?` They share Group ${ga}, so it only happens deep in the bracket.`:''}`;}
- const root=sb('scens');root.innerHTML='';
+ const A=S.A,B=S.B,ga=groupOf(A),gb=groupOf(B),bl=sb('bottomline'),root=sb('scens');
+ if(A===B){bl.innerHTML='Pick two different teams.';root.innerHTML='';return;}
+ const e=earliestAnyWithDates(A,B),scs=scenariosWithDates(A,B);
+ if(!e){bl.innerHTML=`No top-two path found. Open Group standings to explore third-place routes and knockout assumptions.`;}
+ else{bl.innerHTML=`Earliest possible meeting: <b>${RNAME[e.meetingRound]}</b>, M${e.meetingMatchId}, ${dnode(e.meetingDateISO)}.<br>Required finish: <b>${finishLine(A,e.teamAFinish)}</b>, <b>${finishLine(B,e.teamBFinish)}</b>.${ga===gb?`<br>These teams share Group ${ga}, so same-position finish scenarios are impossible.`:''}`;}
+ root.innerHTML='';
  if(!scs.length){root.innerHTML='<div class="never">No meeting is possible in the top-two finishes shown.</div>';return;}
- scs.forEach(s=>{const card=document.createElement('div');card.className='scen';
-  let h=`<div class="scen-h"><span class="if">If</span><span class="fin"><span class="ta">${A} ${ORD[s.pa-1]}</span> &amp; <span class="tb">${B} ${ORD[s.pb-1]}</span></span>${pillHTML(s.round)}</div><div class="roads">`;
-  [['a',A,s.routeA],['b',B,s.routeB]].forEach(([cls,nm,route])=>{
-   h+=`<div class="road ${cls}"><div class="road-t">${nm}'s road</div><div class="road-key"><span>Round</span><span>Match</span><span>Must beat</span></div>`;
-   route.forEach(st=>{h+=`<div class="step ${RCLS[st.round]}${st.meet?' meet':''}"><span class="rd">${RSHORT[st.round]}</span><span class="mn">M${st.mid}</span><span class="op">${st.meet?'meet '+st.opp:st.opp}</span></div>`;});
-   h+=`</div>`;});
-  h+=`</div>`;card.innerHTML=h;root.appendChild(card);});
+ // Earliest scenario first and expanded; the rest collapse into accordions.
+ const eid=e?e.meetingMatchId:null,efa=e?e.teamAFinish:null,efb=e?e.teamBFinish:null;
+ const isEarliest=s=>s.meetingMatchId===eid&&s.teamAFinish===efa&&s.teamBFinish===efb;
+ const ordered=[...scs.filter(isEarliest),...scs.filter(s=>!isEarliest(s))];
+ root.innerHTML=ordered.map((s,i)=>routeCardHTML(s,i===0)).join('');
+}
+// Round order for discovery buckets (no THIRD column in top-two view).
+const ROUND_ORDER=['R32','R16','QF','SF','FINAL'];
+// Build a column of teams bucketed by the earliest round they can meet `anchor`.
+function discoveryColumn(anchor){
+ const buckets={};ROUND_ORDER.forEach(r=>buckets[r]=[]);
+ teams().forEach(t=>{if(t===anchor)return;const e=earliestAnyWithDates(t,anchor);if(!e)return;buckets[e.meetingRound].push(t);});
+ let h=`<div class="disc-col"><div class="disc-head">Could meet ${anchor} earliest</div>`;
+ ROUND_ORDER.forEach(r=>{const list=buckets[r];if(!list.length)return;
+  h+=`<div class="disc-bucket"><div class="disc-round"><span class="rdot ${RCLS[r]}" aria-hidden="true"></span>${RNAME[r]}</div><div class="disc-chips">`;
+  list.sort((a,b)=>a.localeCompare(b)).forEach(t=>{
+   h+=`<button class="chip" data-mu="${t}|${anchor}" aria-label="Load ${t} vs ${anchor}">${t}</button>`;});
+  h+=`</div></div>`;});
+ h+=`</div>`;return h;
 }
 function renderAnchor(){
- sb('anchorIntro').innerHTML=`The earliest round every other team could run into <b style="color:var(--usa-ink)">USA</b> or <b style="color:var(--eng-ink)">England</b>, assuming both sides win their way through. Tap any cell to load that matchup above.`;
- const data=teams().map(t=>{const u=t==='USA'?null:earliestAny(t,'USA');const e=t==='England'?null:earliestAny(t,'England');
-  const key=Math.min(u?RIDX[u.round]:9,e?RIDX[e.round]:9);return{t,u,e,key};});
- data.sort((x,y)=>x.key-y.key||x.t.localeCompare(y.t));
- let h=`<tr><th class="tn">Team</th><th class="c">vs USA</th><th class="c">vs England</th></tr>`;
- data.forEach(d=>{const anchor=(d.t==='USA'||d.t==='England');
-  const cell=(res,foe)=>d.t===foe?`<button class="acell self" disabled>—</button>`:`<button class="acell ${res?RCLS[res.round]:''}" data-mu="${d.t}|${foe}">${res?RSHORT[res.round]:'—'}</button>`;
-  h+=`<tr class="${anchor?'anchorrow':''}"><td class="tn">${d.t}</td><td>${cell(d.u,'USA')}</td><td>${cell(d.e,'England')}</td></tr>`;});
- sb('atable').innerHTML=h;
+ sb('anchorIntro').innerHTML=`The earliest round every other team could possibly meet <b style="color:var(--usa-ink)">USA</b> or <b style="color:var(--eng-ink)">England</b>, assuming both sides win their way through. Tap any team to load that matchup above.`;
+ sb('discovery').innerHTML=`<div class="disc-grid">${discoveryColumn('USA')}${discoveryColumn('England')}</div>`;
+}
+// Map a fixture's display state to a normalized chip (section 14.4).
+// YOU = user edit; REAL = final official; LIVE = in progress; FORECAST = projected default.
+function fixtureChip(fs){
+ if(fs.mine)return '<span class="schip you">YOU</span>';
+ if(fs.state==='finished')return '<span class="schip real">REAL</span>';
+ if(fs.state==='live')return '<span class="schip live">LIVE</span>';
+ return '<span class="schip forecast">FORECAST</span>';
+}
+function standingsRowsHTML(g,st,lock){
+ let dord=st.order;if(lock)dord=[st.order.find(r=>r.team===lock),...st.order.filter(r=>r.team!==lock)];
+ let h='';
+ dord.forEach((r,i)=>{const pos=i+1,isL=r.team===lock;
+  // Lock shows once on the clinched-winner row only (section 14.5).
+  const lk=isL?` <span class="schip locked" aria-label="Clinched based on real results">&#128274;</span>`:'';
+  h+=`<tr class="p${pos}${isL?' locked':''}"><td class="posn">${pos}</td><td class="tn">${r.team}${lk}</td><td>${r.P}</td><td class="ext">${r.W}</td><td class="ext">${r.D}</td><td class="ext">${r.L}</td><td class="ext">${r.GF}</td><td class="ext">${r.GA}</td><td>${r.GD>0?'+':''}${r.GD}</td><td class="pts">${r.Pts}</td></tr>`;});
+ return h;
+}
+function groupCardInnerHTML(g,headerTag,relevant){
+ const st=standings(g),lock=clinchedWinner(g);
+ const gfix=FIX.filter(f=>f.g===g);
+ const decided=gfix.filter(f=>fixtureStatus(f.id).state!=='upcoming');
+ const allFinal=gfix.every(f=>official(f.id));
+ const head=allFinal?'final':(st.complete?'projected':(decided.length?'matchday '+Math.max(...decided.map(f=>f.md))+' of 3':'not started'));
+ // Lock once in the group header (section 14.5).
+ let h=`<${headerTag} class="gh">Group ${g}`;
+ if(relevant)h+=` <span class="relnote">in your matchup</span>`;
+ if(lock)h+=` <span class="lock" aria-label="Clinched based on real results">&#128274; ${lock}</span>`;
+ h+=`<span class="complete">${head}</span></${headerTag}>`;
+ h+=`<div class="gctrl"><button class="stattoggle" type="button" data-stats="${g}" aria-expanded="false">Show W D L GF GA</button></div>`;
+ h+=`<table class="stand"><tr><th></th><th class="tn">Team</th><th>Pld</th><th class="ext">W</th><th class="ext">D</th><th class="ext">L</th><th class="ext">GF</th><th class="ext">GA</th><th>GD</th><th>Pts</th></tr>`;
+ h+=standingsRowsHTML(g,st,lock);
+ h+=`</table><div class="fixs"><div class="ttl"><b>Projected fixtures</b><span>edit a score to run a what-if</span></div>`;
+ gfix.forEach(f=>{const fs=fixtureStatus(f.id),sc=fs.shown,hv=sc?sc[0]:'',av=sc?sc[1]:'';
+  h+=`<div class="fx ${fs.state}${fs.mine?' mine':''}"><span class="hn">${f.h}</span><span class="sc">`;
+  h+=`<input inputmode="numeric" data-sc="${f.id}|h" value="${hv}" maxlength="2" aria-label="${f.h} score versus ${f.a}"><span class="dash">-</span><input inputmode="numeric" data-sc="${f.id}|a" value="${av}" maxlength="2" aria-label="${f.a} score versus ${f.h}">`;
+  h+=`</span><span class="an">${f.a}<span class="badges">${fixtureChip(fs)}`;
+  if(fs.mine)h+=`<button class="revert" data-revert="${f.id}" aria-label="Revert this score">&#8635; Revert</button>`;
+  h+=`</span></span></div>`;});
+ h+=`</div>`;
+ return h;
 }
 function renderStandings(){
  const root=sb('groups');root.innerHTML='';
  sb('resetScores').hidden=Object.keys(results).length===0;
- GL.forEach(g=>{const st=standings(g),lock=clinchedWinner(g);
-  const gfix=FIX.filter(f=>f.g===g);
-  const decided=gfix.filter(f=>fixtureStatus(f.id).state!=='upcoming');
-  const allFinal=gfix.every(f=>official(f.id));
-  const head=allFinal?'final':(st.complete?'projected':(decided.length?'matchday '+Math.max(...decided.map(f=>f.md))+' of 3':'not started'));
-  const card=document.createElement('div');card.className='gcard';
-  let h=`<h3>Group ${g}`;if(lock)h+=` <span class="lock">&#128274; ${lock}</span>`;h+=`<span class="complete">${head}</span></h3>`;
-  h+=`<table class="stand"><tr><th></th><th class="tn">Team</th><th>Pld</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th><th>Pts</th></tr>`;
-  let dord=st.order;if(lock)dord=[st.order.find(r=>r.team===lock),...st.order.filter(r=>r.team!==lock)];
-  dord.forEach((r,i)=>{const pos=i+1,isL=r.team===lock;
-   h+=`<tr class="p${pos}${isL?' locked':''}"><td class="posn">${pos}</td><td class="tn">${r.team}${isL?' <span class="lkmini">&#128274;</span>':''}</td><td>${r.P}</td><td>${r.W}</td><td>${r.D}</td><td>${r.L}</td><td>${r.GF}</td><td>${r.GA}</td><td>${r.GD>0?'+':''}${r.GD}</td><td class="pts">${r.Pts}</td></tr>`;});
-  h+=`</table><div class="fixs"><div class="ttl"><b>Teams</b><span>tap a score to edit</span></div>`;
-  gfix.forEach(f=>{const fs=fixtureStatus(f.id),sc=fs.shown,hv=sc?sc[0]:'',av=sc?sc[1]:'';
-   h+=`<div class="fx ${fs.state}${fs.mine?' mine':''}"><span class="hn">${f.h}</span><span class="sc">`;
-   h+=`<input inputmode="numeric" data-sc="${f.id}|h" value="${hv}" maxlength="2" aria-label="${f.h} score"><span class="dash">-</span><input inputmode="numeric" data-sc="${f.id}|a" value="${av}" maxlength="2" aria-label="${f.a} score">`;
-   h+=`</span><span class="an">${f.a}`;
-   if(fs.state==='finished'&&!fs.mine)h+=`<span class="lk">&#128274;</span>`;
-   if(fs.state==='live')h+=`<span class="live-badge">live</span>`;
-   if(fs.mine)h+=`<span class="tag">you</span><button class="revert" data-revert="${f.id}" title="Restore real result">&#8635;</button>`;
-   h+=`</span></div>`;});
-  h+=`</div>`;card.innerHTML=h;root.appendChild(card);});
+ // Relevance order from the core: matchup groups + route + third-place, then rest collapsed.
+ const rel=(S.A===S.B)?{order:GL.slice(),relevantCount:0}:relevantGroups(S.A,S.B);
+ rel.order.forEach((g,i)=>{
+  const relevant=i<rel.relevantCount;
+  let card;
+  if(relevant){
+   card=document.createElement('div');card.className='gcard relevant';
+   card.innerHTML=groupCardInnerHTML(g,'h3',true);
+  }else{
+   // Remaining groups collapse by default (section 14.2).
+   card=document.createElement('details');card.className='gcard collapsible';
+   card.innerHTML=groupCardInnerHTML(g,'summary',false);
+  }
+  root.appendChild(card);});
 }
-function renderAll(){renderPicker();renderVerdictStrip();renderScenarios();renderAnchor();renderStandings();}
+// Re-render the matchup-side views so a Forecast edit stays consistent there.
+function renderActiveMatchup(){renderVerdictStrip();renderHero();renderScenarios();renderAnchor();}
+function renderAll(){renderPicker();renderActiveMatchup();renderStandings();}
 
 // ---- events ----
 sb('marquee').onchange=e=>{if(e.target.value==='')return;S.A=MARQUEE[+e.target.value][1];S.B=MARQUEE[+e.target.value][2];renderAll();};
@@ -340,7 +514,9 @@ function setTab(t){S.tab=t;[...document.querySelectorAll('.tabs button')].forEac
 document.addEventListener('click',e=>{
  const tb=e.target.closest('[data-tab]');if(tb){setTab(tb.dataset.tab);return;}
  const mu=e.target.closest('[data-mu]');if(mu){const[a,b]=mu.dataset.mu.split('|');S.A=a;S.B=b;setTab('matchups');window.scrollTo({top:0,behavior:'smooth'});renderAll();return;}
- const rv=e.target.closest('[data-revert]');if(rv){delete results[rv.dataset.revert];renderStandings();return;}
+ const rv=e.target.closest('[data-revert]');if(rv){delete results[rv.dataset.revert];renderStandings();renderActiveMatchup();return;}
+ const stx=e.target.closest('[data-stats]');if(stx){const card=stx.closest('.gcard');const on=card.classList.toggle('expanded');
+  stx.setAttribute('aria-expanded',on?'true':'false');stx.textContent=on?'Hide W D L GF GA':'Show W D L GF GA';return;}
 });
 document.addEventListener('input',e=>{const inp=e.target.closest('[data-sc]');if(!inp)return;
  const[fid,side]=inp.dataset.sc.split('|');const v=inp.value.replace(/[^0-9]/g,'').slice(0,2);if(v!==inp.value)inp.value=v;
@@ -350,9 +526,13 @@ document.addEventListener('input',e=>{const inp=e.target.closest('[data-sc]');if
  if(base[0]==null&&base[1]==null)delete results[fid];
  else{const filled=[base[0]==null?0:base[0],base[1]==null?0:base[1]];
   if(real&&real[0]===filled[0]&&real[1]===filled[1])delete results[fid];else results[fid]=filled;}
- const key=inp.dataset.sc;renderStandings();
- const again=document.querySelector('[data-sc="'+key+'"]');if(again){again.focus();try{again.setSelectionRange(again.value.length,again.value.length);}catch(_){}}});
-sb('resetScores').onclick=()=>{Object.keys(results).forEach(k=>delete results[k]);renderStandings();};
+ const key=inp.dataset.sc,card=inp.closest('.gcard'),wasExpanded=card&&card.classList.contains('expanded'),wasOpen=card&&card.tagName==='DETAILS'&&card.open;
+ renderStandings();renderActiveMatchup();
+ // Restore the edited card's expand/open state and refocus the input.
+ const again=document.querySelector('[data-sc="'+key+'"]');
+ if(again){const nc=again.closest('.gcard');if(nc){if(wasExpanded)nc.classList.add('expanded');if(wasOpen&&nc.tagName==='DETAILS')nc.open=true;}
+  again.focus();try{again.setSelectionRange(again.value.length,again.value.length);}catch(_){}}});
+sb('resetScores').onclick=()=>{Object.keys(results).forEach(k=>delete results[k]);renderStandings();renderActiveMatchup();};
 
 // ---- live data ----
 let liveOK=false,lastStamp='';
@@ -362,7 +542,7 @@ function setStatus(loading){const el=sb('asof');
   :'<span class="dstatus"><span class="dot off"></span>Offline &middot; showing saved snapshot (through June 22, 2026)</span>';}
 function refresh(){fetch(WC.API_BASE+'/get/games',{cache:'no-store'})
  .then(r=>r.ok?r.json():Promise.reject(new Error('HTTP '+r.status)))
- .then(g=>{M.setLiveScores(g);liveOK=true;lastStamp=new Date().toLocaleTimeString();renderStandings();setStatus();})
+ .then(g=>{M.setLiveScores(g);M.setSchedule(g);liveOK=true;lastStamp=new Date().toLocaleTimeString();renderAll();setStatus();})
  .catch(()=>{liveOK=false;setStatus();});}
 setStatus(true);renderAll();refresh();setInterval(refresh,30000);
 </script>
