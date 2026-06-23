@@ -1,0 +1,11 @@
+{
+  "name": "world-cup-matchups",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Live 2026 FIFA World Cup matchup forecaster (static SPA + worldcup26.ir).",
+  "scripts": {
+    "test": "node tests/run.js",
+    "test:offline": "WC_SKIP_LIVE=1 node tests/run.js"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,30 @@
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
+*.swp
+
+# Secrets / local (1Password is canonical — never commit literals)
+.env
+.env.*
+settings.local.json
+*.pem
+credentials.json
+
+# Scratch (the _ convention, scoped to one parent — _archive stays tracked)
+_local/
+
+# Language
+node_modules/
+__pycache__/
+.venv/
+dist/
+build/
+*.egg-info/
+
+# Logs
+*.log
+logs/
+
+# Obsidian
+.obsidian/

@@ -1,0 +1,19 @@
+# CLAUDE.MD
+- Project Goal: launch an API integrated, real-time 2026 FIFA World Cup Matchup Forecast website.
+- Approach: 
+	- Review state of current project files
+- Integrations:
+	- Review this API: https://github.com/rezarahiminia/worldcup2026
+	- Develop a plan to integrate the API with the currently available source code
+- Updates to source
+	- Claude may select alternate designs
+	- Claude should fix bugs and refactor code as needed
+	- Claude should ensure that this site is usable across both mobile and desktop surfaces
+- Experience
+	- Users have real time scores to populate their picks
+	- Three tabs
+		- Matchups
+		- Group Standings
+			- Add in the feature from the secpond earlier html file to allow entry of scores, goals, etc. into non decided match
+		- Kalshi Real Time Odds (not started-this is on the backlog for the next version
+- This will be hosted using a free github repo
