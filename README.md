@@ -4,7 +4,9 @@ A live 2026 FIFA World Cup matchup forecaster. Pick any two of the 48 teams and
 see the earliest round they could meet and the exact knockout road each side
 has to walk, with group standings pulled live from the official feed.
 
-It is a single static HTML file with no build step and no backend.
+Live: <https://klappe-pm.github.io/world-cup-matchups/>
+
+It has no build step and no backend.
 
 ## Features
 
@@ -33,14 +35,16 @@ merge model are documented in
 
 ## Use
 
-Open `src/world-cup-2026-matchups.html` in a browser, or serve the `src/`
-folder as static files:
+It is live on GitHub Pages: <https://klappe-pm.github.io/world-cup-matchups/>
+
+To run it locally, open `index.html` in a browser, or serve the repo root:
 
 ```sh
-python3 -m http.server -d src 8000   # then visit http://localhost:8000/world-cup-2026-matchups.html
+python3 -m http.server 8000   # then visit http://localhost:8000/
 ```
 
-To deploy, publish `src/` as a static site (for example GitHub Pages).
+Deployment is automatic: GitHub Pages serves `index.html` from `main`, so a push
+updates the live site within a minute or two.
 
 ## Run the tests
 
@@ -58,8 +62,9 @@ endpoint shapes. See [`tests/README.md`](tests/README.md).
 
 ## Structure
 
-- `src/` — the single-page app (`world-cup-2026-matchups.html`) and the DOM-free
-  core logic (`wc-core.js`) shared by the app and the tests
+- `index.html` — the single-page app, served at the site root
+- `src/wc-core.js` — DOM-free core logic shared by the app and the tests
+  (`src/` also keeps the earlier standalone version for reference)
 - `tests/` — Node test suite and captured API fixtures
 - `scripts/` — one-off and operational scripts
 - `docs/` — operating records and references
