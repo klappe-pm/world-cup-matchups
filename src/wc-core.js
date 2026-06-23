@@ -25,6 +25,42 @@
 
   function normalizeName(n) { return NAME_MAP[n] || n; }
 
+  // Map an API game type (or group token) to the app's round tokens.
+  // group/* stays falsy (group games carry no knockout round).
+  var ROUND_MAP = { r32: 'R32', r16: 'R16', qf: 'QF', sf: 'SF', final: 'FINAL', third: 'THIRD' };
+  function normalizeRound(type) {
+    return ROUND_MAP[String(type || '').toLowerCase()] || null;
+  }
+
+  // Convert an API local_date ("MM/DD/YYYY HH:mm") to "yyyy-MM-dd". Null-safe.
+  function toISODate(localDate) {
+    if (!localDate) return null;
+    var mdy = String(localDate).split(' ')[0];
+    var parts = mdy.split('/');
+    var mm = parts[0], dd = parts[1], yyyy = parts[2];
+    if (!mm || !dd || !yyyy) return null;
+    return yyyy + '-' + String(mm).padStart(2, '0') + '-' + String(dd).padStart(2, '0');
+  }
+
+  // Index ALL games (group + knockout) by Number(id) -> schedule entry.
+  function buildScheduleByMatchId(gamesPayload) {
+    var map = {};
+    var games = (gamesPayload && gamesPayload.games) || [];
+    games.forEach(function (g) {
+      var id = Number(g.id);
+      if (!id) return;
+      map[id] = {
+        id: id,
+        type: String(g.type || '').toLowerCase(),
+        round: normalizeRound(g.type || g.group),
+        localDateRaw: g.local_date || null,
+        dateISO: toISODate(g.local_date),
+        stadiumId: g.stadium_id || null
+      };
+    });
+    return map;
+  }
+
   function toScore(v) {
     if (v === '' || v === null || v === undefined) return null;
     var n = Number(v);
@@ -114,7 +150,7 @@
     var pathFrom = function (e) { var p = [], id = e; while (id != null) { p.push(id); id = NEXT[id]; } return p; };
 
     // results: user what-if overrides (fixId -> [h,a]). live: API-merged scores.
-    var state = { results: {}, live: {} };
+    var state = { results: {}, live: {}, schedule: {} };
 
     // official(): final real result only (API finished beats snapshot). Drives clinch.
     function official(fid) {
@@ -221,6 +257,71 @@
     }
     function earliestAny(a, b) { var best = null; scenarios(a, b).forEach(function (s) { if (!best || RIDX[s.round] < RIDX[best.round]) best = s; }); return best; }
 
+    // ---- date-aware enrichment (wraps the structural engine; no path re-walk) ----
+    function scheduleFor(matchId) { return state.schedule[matchId] || null; }
+    function dateFor(matchId) { var e = scheduleFor(matchId); return e ? e.dateISO : null; }
+
+    // Map an existing structural step {mid,round,opp,meet} to a PathStep.
+    function enrichStep(step) {
+      return {
+        matchId: step.mid,
+        round: step.round,
+        dateISO: dateFor(step.mid),
+        opponentLabel: step.opp,
+        isMeetingMatch: step.meet,
+        status: 'ASSUMED'
+      };
+    }
+    function enrichScenario(a, b, s) {
+      return {
+        teamA: a,
+        teamB: b,
+        teamAFinish: s.pa,
+        teamBFinish: s.pb,
+        meetingRound: s.round,
+        meetingMatchId: s.meet,
+        meetingDateISO: dateFor(s.meet),
+        teamAPath: s.routeA.map(enrichStep),
+        teamBPath: s.routeB.map(enrichStep)
+      };
+    }
+    function scenariosWithDates(a, b) { return scenarios(a, b).map(function (s) { return enrichScenario(a, b, s); }); }
+    function earliestAnyWithDates(a, b) { var s = earliestAny(a, b); return s ? enrichScenario(a, b, s) : null; }
+
+    // Relevance-ordered group list for the Forecast tab (section 14.2):
+    // 1) Team A group, 2) Team B group, 3) groups referenced by scenario route
+    // nodes, 4) groups referenced by third-place slots, 5) remaining groups.
+    // Pure: derives only from the structural draw, scenarios, and group map.
+    function relevantGroups(a, b) {
+      var ordered = [], seen = {};
+      var push = function (g) { if (g && !seen[g]) { seen[g] = true; ordered.push(g); } };
+      var thirdSeen = {};
+      var ga = groupOf(a), gb = groupOf(b);
+      push(ga); push(gb);
+      var routeGroups = [], thirdGroups = [];
+      if (a !== b) {
+        scenarios(a, b).forEach(function (s) {
+          [s.routeA, s.routeB].forEach(function (route) {
+            route.forEach(function (step) {
+              var m = R32BY[step.mid];
+              if (!m) return; // only R32 entry nodes carry a group-slot opponent
+              ['a', 'b'].forEach(function (side) {
+                var sl = m[side];
+                if (sl.t === 'pos') { if (routeGroups.indexOf(sl.g) < 0) routeGroups.push(sl.g); }
+                else if (sl.t === 'third' && sl.slot) { if (!thirdSeen[sl.slot]) { thirdSeen[sl.slot] = true; thirdGroups.push(sl.slot); } }
+              });
+            });
+          });
+        });
+      }
+      var relevantCount;
+      routeGroups.forEach(push);
+      thirdGroups.forEach(push);
+      relevantCount = ordered.length;
+      GL.forEach(push); // remaining groups, collapsed by default
+      return { order: ordered, relevantCount: relevantCount };
+    }
+
     function teams() { var t = []; GL.forEach(function (g) { GROUPS[g].forEach(function (x) { t.push(x); }); }); return t.sort(); }
 
     // Per-fixture display state for the view.
@@ -244,6 +345,10 @@
       official: official, current: current, committed: committed,
       standings: standings, clinchedWinner: clinchedWinner,
       scenarios: scenarios, earliestAny: earliestAny,
+      setSchedule: function (gamesPayload) { state.schedule = buildScheduleByMatchId(gamesPayload); return Object.keys(state.schedule).length; },
+      scheduleFor: scheduleFor,
+      scenariosWithDates: scenariosWithDates, earliestAnyWithDates: earliestAnyWithDates,
+      relevantGroups: relevantGroups,
       fixtureStatus: fixtureStatus
     };
   }
@@ -252,6 +357,9 @@
     API_BASE: API_BASE,
     NAME_MAP: NAME_MAP,
     normalizeName: normalizeName,
+    normalizeRound: normalizeRound,
+    toISODate: toISODate,
+    buildScheduleByMatchId: buildScheduleByMatchId,
     parseGroupGames: parseGroupGames,
     indexLiveByFixture: indexLiveByFixture,
     fetchLive: fetchLive,

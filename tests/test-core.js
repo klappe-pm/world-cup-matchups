@@ -166,6 +166,62 @@ t.test('overriding a finished game marks it mine but keeps clinch on real result
   t.eq(M.clinchedWinner(g), clinchBefore, 'clinch still on real result');
 });
 
+// ---- date parsing ----
+t.test('toISODate converts API local_date to yyyy-MM-dd', () => {
+  t.eq(WC.toISODate('07/10/2026 12:00'), '2026-07-10');
+});
+t.test('toISODate returns null for missing date', () => {
+  t.eq(WC.toISODate(null), null);
+});
+
+// ---- schedule lookup ----
+t.test('buildScheduleByMatchId indexes knockout dates', () => {
+  const schedule = WC.buildScheduleByMatchId(gamesPayload);
+  t.eq(schedule[98].dateISO, '2026-07-10');
+  t.eq(schedule[102].dateISO, '2026-07-15');
+  t.eq(schedule[104].dateISO, '2026-07-19');
+});
+
+// ---- USA vs England date-aware scenarios ----
+t.test('USA vs England earliest date-aware scenario is QF M98', () => {
+  const M = WC.createModel(struct);
+  M.setSchedule(gamesPayload);
+  const e = M.earliestAnyWithDates('USA', 'England');
+  t.eq(e.meetingRound, 'QF');
+  t.eq(e.meetingMatchId, 98);
+  t.eq(e.meetingDateISO, '2026-07-10');
+  t.eq(e.teamAFinish, 1);
+  t.eq(e.teamBFinish, 2);
+});
+t.test('USA 1st England 2nd path dates are attached to every node', () => {
+  const M = WC.createModel(struct);
+  M.setSchedule(gamesPayload);
+  const s = M.scenariosWithDates('USA', 'England')
+    .find(x => x.teamAFinish === 1 && x.teamBFinish === 2);
+  t.eq(s.teamAPath.map(x => x.dateISO), [
+    '2026-07-01',
+    '2026-07-06',
+    '2026-07-10'
+  ]);
+  t.eq(s.teamBPath.map(x => x.dateISO), [
+    '2026-07-02',
+    '2026-07-06',
+    '2026-07-10'
+  ]);
+});
+t.test('USA vs England top-two scenarios match expected meeting IDs', () => {
+  const M = WC.createModel(struct);
+  M.setSchedule(gamesPayload);
+  const rows = M.scenariosWithDates('USA', 'England')
+    .map(s => [s.teamAFinish, s.teamBFinish, s.meetingRound, s.meetingMatchId, s.meetingDateISO]);
+  t.eq(rows, [
+    [1, 1, 'FINAL', 104, '2026-07-19'],
+    [1, 2, 'QF', 98, '2026-07-10'],
+    [2, 1, 'SF', 102, '2026-07-15'],
+    [2, 2, 'FINAL', 104, '2026-07-19']
+  ]);
+});
+
 // ---- structural path engine is unaffected by scores ----
 t.test('earliest-meeting path is structural (USA vs England) and score-independent', () => {
   const M = modelWithLive();
