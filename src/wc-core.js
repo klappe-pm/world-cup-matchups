@@ -85,6 +85,7 @@
         away: normalizeName(x.away_team_name_en),
         hs: toScore(x.home_score),
         as: toScore(x.away_score),
+        dateISO: toISODate(x.local_date),
         finished: finished,
         live: live
       });
@@ -107,7 +108,7 @@
       if (!g) continue;
       var hs = g.hs, as_ = g.as;
       if (g.home !== f.h) { hs = g.as; as_ = g.hs; } // fixture orientation differs from API
-      map[f.id] = { hs: hs, as: as_, finished: g.finished, live: g.live };
+      map[f.id] = { hs: hs, as: as_, finished: g.finished, live: g.live, dateISO: g.dateISO || null };
     }
     return map;
   }
@@ -333,7 +334,8 @@
       var liveOn = !!(lv && lv.live);            // in progress now
       var st = real ? 'finished' : (liveOn ? 'live' : 'upcoming');
       var shown = mine ? state.results[fid] : current(fid);
-      return { state: st, mine: mine, real: real, shown: shown, live: liveOn };
+      var dateISO = (lv && lv.dateISO) || null;  // group-fixture kickoff date from the live feed
+      return { state: st, mine: mine, real: real, shown: shown, live: liveOn, dateISO: dateISO };
     }
 
     return {

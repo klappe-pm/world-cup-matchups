@@ -77,7 +77,19 @@ t.test('indexLiveByFixture orients scores to the fixture home/away', () => {
   }] };
   const map = WC.indexLiveByFixture(FIX, WC.parseGroupGames(games));
   // API: Beta(home)=3, Alpha(away)=1. Fixture home=Alpha => Alpha 1, Beta 3.
-  t.eq(map[0], { hs: 1, as: 3, finished: true, live: false });
+  t.eq(map[0], { hs: 1, as: 3, finished: true, live: false, dateISO: null });
+});
+
+t.test('indexLiveByFixture carries the group-game kickoff date to the fixture', () => {
+  const FIX = [{ id: 0, g: 'Z', h: 'Alpha', a: 'Beta', md: 1 }];
+  const games = { games: [{
+    type: 'group', group: 'Z', matchday: '1',
+    home_team_name_en: 'Alpha', away_team_name_en: 'Beta',
+    home_score: null, away_score: null, time_elapsed: 'notstarted',
+    local_date: '06/24/2026 18:00'
+  }] };
+  const map = WC.indexLiveByFixture(FIX, WC.parseGroupGames(games));
+  t.eq(map[0].dateISO, '2026-06-24');
 });
 
 // ---- model: live merge + standings vs API table ----
