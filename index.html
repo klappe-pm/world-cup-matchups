@@ -10,7 +10,9 @@
   --chalk:#f2f8f3;--dim:#bcd4c5;--line:#3aa06e;--line-soft:#246b49;
   --usa:#4f86ff;--usa-ink:#cfe0ff;--eng:#ff5e72;--eng-ink:#ffd5db;--win:#36d98f;
   --r32:#a6bccb;--r16:#5fb0ec;--qf:#2fcf8c;--sf:#ffb068;--final:#ffd24d;--gold:#ffd24d;--gold-deep:#a6791a;
-  --tab-mu:#4f86ff;--tab-st:#ffd24d;
+  /* Tab accents: Matchup = medium/light blue, Forecast = light/medium green */
+  --tab-mu:#5b9bff;--tab-mu-top:#cfe0ff;--tab-mu-ink:#06203f;
+  --tab-st:#3ec88a;--tab-st-top:#bdf2da;--tab-st-ink:#05281b;
   --sans:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -30,8 +32,8 @@ body{background:radial-gradient(135% 75% at 50% -8%,#3bb586 0%,var(--bg1) 42%,va
   border-radius:11px 11px 0 0;padding:12px 8px;font-size:15.5px;font-weight:700;font-family:var(--sans);cursor:pointer;min-height:48px;
   border-top:3px solid transparent;transition:background .12s,color .12s}
 .tabs button.on{font-weight:800}
-.tabs button[data-tab="matchups"].on{background:var(--tab-mu);border-color:var(--tab-mu);border-top-color:#dbe7ff;color:#08213f}
-.tabs button[data-tab="standings"].on{background:var(--tab-st);border-color:var(--tab-st);border-top-color:#a6791a;color:#2a2105}
+.tabs button[data-tab="matchups"].on{background:var(--tab-mu);border-color:var(--tab-mu);border-top-color:var(--tab-mu-top);color:var(--tab-mu-ink)}
+.tabs button[data-tab="standings"].on{background:var(--tab-st);border-color:var(--tab-st);border-top-color:var(--tab-st-top);color:var(--tab-st-ink)}
 .verdict-strip{display:none;align-items:center;gap:9px;padding:9px 0 10px}
 .verdict-strip.show{display:flex}
 .vs-mu{flex:1;min-width:0;font-size:clamp(16.5px,4.8vw,21px);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -81,23 +83,9 @@ section{margin-top:22px}
 @media(min-width:560px){.groups{grid-template-columns:1fr 1fr}}
 .gcard{background:var(--panel2);border:1px solid var(--line);border-radius:13px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.24)}
 .gcard .gh,.gcard h3{font-size:16.5px;font-weight:800;margin:0;padding:11px 13px;background:rgba(255,255,255,.06);border-bottom:1px solid var(--line-soft);display:flex;align-items:center;gap:7px}
-.lock{font-size:10.5px;color:#2a2105;background:var(--gold);border-radius:5px;padding:2px 7px;font-weight:700;display:inline-flex;gap:3px;align-items:center}
-.complete{margin-left:auto;font-size:10.5px;color:var(--dim);font-weight:500}
-.gcard.relevant{border-color:var(--gold-deep);box-shadow:0 0 0 1px rgba(255,210,77,.14),0 4px 16px rgba(0,0,0,.24)}
-.gcard.relevant h3{background:rgba(255,210,77,.07)}
-.relnote{font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);font-weight:700}
-/* remaining groups collapse by default (section 14.2) */
-.gcard.collapsible>summary{cursor:pointer;list-style:none}
-.gcard.collapsible>summary::-webkit-details-marker{display:none}
-.gcard.collapsible>summary::after{content:'\25be';margin-left:9px;color:var(--dim);font-size:11px;transition:transform .12s}
-.gcard.collapsible[open]>summary::after{transform:rotate(180deg)}
-.gcard.collapsible:not([open]) .complete{margin-left:0}
-/* expanded-stats toggle */
-.gctrl{display:flex;justify-content:flex-end;padding:7px 12px 0}
-.stattoggle{background:var(--panel3);border:1px solid var(--line);color:var(--dim);border-radius:6px;font-size:11px;font-weight:600;font-family:var(--sans);padding:4px 9px;cursor:pointer;min-height:28px}
-.stattoggle:active{background:rgba(255,255,255,.07)}
-table.stand th.ext,table.stand td.ext{display:none}
-.gcard.expanded table.stand th.ext,.gcard.expanded table.stand td.ext{display:table-cell}
+.lock{font-size:10.5px;color:#2a2105;background:var(--gold);border-radius:5px;padding:2px 7px;font-weight:700;display:inline-flex;gap:3px;align-items:center;margin-left:auto}
+/* full stats (W/D/L/GF/GA) always shown — section 14.3 */
+table.stand th.ext,table.stand td.ext{display:table-cell}
 table.stand{width:100%;border-collapse:collapse;font-size:13.75px}
 table.stand th{font-size:10.5px;color:var(--dim);text-transform:uppercase;font-weight:600;padding:6px 3px;text-align:center;border-bottom:1px solid var(--line-soft)}
 table.stand th.tn{text-align:left;padding-left:11px}
@@ -122,11 +110,13 @@ table.stand tr.locked td.pts{color:var(--gold)}
 .fx input{width:34px;height:38px;text-align:center;background:var(--panel3);color:var(--chalk);border:1px solid var(--line);border-radius:8px;font-family:var(--sans);font-size:16.5px;font-variant-numeric:tabular-nums;-moz-appearance:textfield;padding:0}
 .fx input::-webkit-outer-spin-button,.fx input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
 .fx input:focus{outline:none;border-color:var(--gold-deep);background:rgba(255,210,77,.10)}
+.fx input:disabled{opacity:.62;cursor:not-allowed;border-color:var(--line-soft);background:var(--panel2)}
 .fx.mine .sc input{border-color:var(--gold-deep)}
 .fx .badges{display:inline-flex;align-items:center;gap:4px;margin-left:5px;vertical-align:middle}
-/* normalized state chip set (section 14.4): REAL/LIVE/YOU/FORECAST/LOCKED */
-.schip{font-size:9px;letter-spacing:.06em;text-transform:uppercase;font-weight:800;border-radius:3px;padding:1px 5px;line-height:1.5;white-space:nowrap}
+/* normalized state chip set (section 14.4): FINAL/LIVE/YOU/DATE/FORECAST/LOCKED */
+.schip{display:inline-flex;align-items:center;font-size:9px;letter-spacing:.06em;text-transform:uppercase;font-weight:800;border-radius:3px;padding:2px 6px;line-height:1.4;height:18px;white-space:nowrap}
 .schip.real{color:#04210f;background:var(--win)}
+.schip.date{color:var(--dim);background:transparent;border:1px solid var(--line-soft);text-transform:none;letter-spacing:0;font-weight:700;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
 .schip.live{color:#2a1505;background:var(--sf)}
 .schip.live::before{content:'';display:inline-block;width:5px;height:5px;border-radius:50%;background:#2a1505;margin-right:4px;vertical-align:middle;animation:lblink 1.1s infinite}
 .schip.you{color:#1a1030;background:var(--usa-ink);background:#c8b6ff}
@@ -216,17 +206,6 @@ details.help .key{display:inline-block;background:var(--panel3);border:1px solid
 
 .never{padding:11px 13px;color:var(--dim);font-size:14px;background:var(--panel2);border:1px dashed var(--line-soft);border-radius:10px}
 
-/* grouped discovery (section 16) */
-.disc-grid{display:grid;grid-template-columns:1fr;gap:13px}
-@media(min-width:560px){.disc-grid{grid-template-columns:1fr 1fr}}
-.disc-col{background:var(--panel2);border:1px solid var(--line-soft);border-radius:12px;padding:12px 13px}
-.disc-head{font-size:13px;font-weight:800;color:var(--chalk);margin-bottom:9px}
-.disc-bucket{margin-bottom:11px}
-.disc-round{display:flex;align-items:center;gap:6px;font-size:11px;letter-spacing:.04em;text-transform:uppercase;font-weight:700;color:var(--dim);margin-bottom:6px}
-.disc-chips{display:flex;flex-wrap:wrap;gap:6px}
-.chip{background:var(--panel3);border:1px solid var(--line);color:var(--chalk);border-radius:999px;padding:6px 11px;font-size:13px;font-weight:600;font-family:var(--sans);cursor:pointer;min-height:34px}
-.chip:active{background:rgba(255,255,255,.07)}
-
 footer{margin-top:30px;padding:15px 0 0;border-top:1px solid var(--line-soft);color:var(--dim);font-size:11.5px}
 .asof{font-size:11px;color:var(--dim);margin:12px 0 0;font-weight:600}
 </style>
@@ -273,12 +252,6 @@ footer{margin-top:30px;padding:15px 0 0;border-top:1px solid var(--line-soft);co
       <p>Each route below is one way the groups can finish. Inside a route, every node is a single knockout match that team is assumed to win to stay alive; nodes read in order from the Round of 32 up. The gold meeting node is the match where the two teams meet. <span class="key">M##</span> is the match's slot on the 104-game schedule: group games are 1&ndash;72, Round of 32 is 73&ndash;88, Round of 16 89&ndash;96, quarterfinals 97&ndash;100, semifinals 101&ndash;102, final 104.</p>
     </details>
   </section>
-
-  <section>
-    <div class="shead"><h2>Every team, by earliest meeting</h2></div>
-    <p class="explainer" id="anchorIntro"></p>
-    <div id="discovery"></div>
-  </section>
 </div>
 
 <!-- STANDINGS TAB -->
@@ -286,7 +259,7 @@ footer{margin-top:30px;padding:15px 0 0;border-top:1px solid var(--line-soft);co
   <header class="hero">
     <p class="kick">Projected tables</p>
     <h1>Forecast</h1>
-    <p class="sub" id="forecastSub">These are projected standings, not official. Groups for your selected matchup come first. Edit any score to run a what-if and the projection updates instantly. A clinched group winner is locked, based on real results only.</p>
+    <p class="sub" id="forecastSub">These are projected standings, not official. All twelve groups are listed A&ndash;L. Edit any upcoming score to run a what-if and the projection updates instantly; final results are locked. A clinched group winner is locked, based on real results only.</p>
   </header>
   <div class="predbar"><span class="predhint">Edit any score to run a what-if; edited matches get a <b>YOU</b> chip and a revert button. The clinch lock follows real results only, never your edits.</span><button class="reset" id="resetScores" hidden>Reset my scores</button></div>
   <div class="groups" id="groups"></div>
@@ -333,8 +306,7 @@ let S={A:'USA',B:'England',tab:'matchups'};
 const groupOf=M.groupOf,scenarios=M.scenarios,earliestAny=M.earliestAny,standings=M.standings,
       clinchedWinner=M.clinchedWinner,official=M.official,committed=M.committed,current=M.current,
       fixtureStatus=M.fixtureStatus,teams=M.teams,
-      scenariosWithDates=M.scenariosWithDates,earliestAnyWithDates=M.earliestAnyWithDates,
-      relevantGroups=M.relevantGroups;
+      scenariosWithDates=M.scenariosWithDates,earliestAnyWithDates=M.earliestAnyWithDates;
 // Required-finish line, e.g. "USA 1st in Group D". All from the model.
 function finishLine(team,pos){const g=groupOf(team);return `${team} ${ORD[pos-1]} in Group ${g}`;}
 function dnode(d){return d||'Date TBD';}
@@ -422,30 +394,14 @@ function renderScenarios(){
  const ordered=[...scs.filter(isEarliest),...scs.filter(s=>!isEarliest(s))];
  root.innerHTML=ordered.map((s,i)=>routeCardHTML(s,i===0)).join('');
 }
-// Round order for discovery buckets (no THIRD column in top-two view).
-const ROUND_ORDER=['R32','R16','QF','SF','FINAL'];
-// Build a column of teams bucketed by the earliest round they can meet `anchor`.
-function discoveryColumn(anchor){
- const buckets={};ROUND_ORDER.forEach(r=>buckets[r]=[]);
- teams().forEach(t=>{if(t===anchor)return;const e=earliestAnyWithDates(t,anchor);if(!e)return;buckets[e.meetingRound].push(t);});
- let h=`<div class="disc-col"><div class="disc-head">Could meet ${anchor} earliest</div>`;
- ROUND_ORDER.forEach(r=>{const list=buckets[r];if(!list.length)return;
-  h+=`<div class="disc-bucket"><div class="disc-round"><span class="rdot ${RCLS[r]}" aria-hidden="true"></span>${RNAME[r]}</div><div class="disc-chips">`;
-  list.sort((a,b)=>a.localeCompare(b)).forEach(t=>{
-   h+=`<button class="chip" data-mu="${t}|${anchor}" aria-label="Load ${t} vs ${anchor}">${t}</button>`;});
-  h+=`</div></div>`;});
- h+=`</div>`;return h;
-}
-function renderAnchor(){
- sb('anchorIntro').innerHTML=`The earliest round every other team could possibly meet <b style="color:var(--usa-ink)">USA</b> or <b style="color:var(--eng-ink)">England</b>, assuming both sides win their way through. Tap any team to load that matchup above.`;
- sb('discovery').innerHTML=`<div class="disc-grid">${discoveryColumn('USA')}${discoveryColumn('England')}</div>`;
-}
 // Map a fixture's display state to a normalized chip (section 14.4).
-// YOU = user edit; REAL = final official; LIVE = in progress; FORECAST = projected default.
+// YOU = user edit; FINAL = final official; LIVE = in progress;
+// upcoming with a known kickoff = the match date; otherwise FORECAST.
 function fixtureChip(fs){
  if(fs.mine)return '<span class="schip you">YOU</span>';
- if(fs.state==='finished')return '<span class="schip real">REAL</span>';
+ if(fs.state==='finished')return '<span class="schip real">FINAL</span>';
  if(fs.state==='live')return '<span class="schip live">LIVE</span>';
+ if(fs.dateISO)return `<span class="schip date num">${fs.dateISO}</span>`;
  return '<span class="schip forecast">FORECAST</span>';
 }
 function standingsRowsHTML(g,st,lock){
@@ -457,26 +413,23 @@ function standingsRowsHTML(g,st,lock){
   h+=`<tr class="p${pos}${isL?' locked':''}"><td class="posn">${pos}</td><td class="tn">${r.team}${lk}</td><td>${r.P}</td><td class="ext">${r.W}</td><td class="ext">${r.D}</td><td class="ext">${r.L}</td><td class="ext">${r.GF}</td><td class="ext">${r.GA}</td><td>${r.GD>0?'+':''}${r.GD}</td><td class="pts">${r.Pts}</td></tr>`;});
  return h;
 }
-function groupCardInnerHTML(g,headerTag,relevant){
+function groupCardInnerHTML(g){
  const st=standings(g),lock=clinchedWinner(g);
  const gfix=FIX.filter(f=>f.g===g);
- const decided=gfix.filter(f=>fixtureStatus(f.id).state!=='upcoming');
- const allFinal=gfix.every(f=>official(f.id));
- const head=allFinal?'final':(st.complete?'projected':(decided.length?'matchday '+Math.max(...decided.map(f=>f.md))+' of 3':'not started'));
  // Lock once in the group header (section 14.5).
- let h=`<${headerTag} class="gh">Group ${g}`;
- if(relevant)h+=` <span class="relnote">in your matchup</span>`;
+ let h=`<h3 class="gh">Group ${g}`;
  if(lock)h+=` <span class="lock" aria-label="Clinched based on real results">&#128274; ${lock}</span>`;
- h+=`<span class="complete">${head}</span></${headerTag}>`;
- h+=`<div class="gctrl"><button class="stattoggle" type="button" data-stats="${g}" aria-expanded="false">Show W D L GF GA</button></div>`;
+ h+=`</h3>`;
  h+=`<table class="stand"><tr><th></th><th class="tn">Team</th><th>Pld</th><th class="ext">W</th><th class="ext">D</th><th class="ext">L</th><th class="ext">GF</th><th class="ext">GA</th><th>GD</th><th>Pts</th></tr>`;
  h+=standingsRowsHTML(g,st,lock);
  h+=`</table><div class="fixs"><div class="ttl"><b>Projected fixtures</b><span>edit a score to run a what-if</span></div>`;
- gfix.forEach(f=>{const fs=fixtureStatus(f.id),sc=fs.shown,hv=sc?sc[0]:'',av=sc?sc[1]:'';
-  h+=`<div class="fx ${fs.state}${fs.mine?' mine':''}"><span class="hn">${f.h}</span><span class="sc">`;
-  h+=`<input inputmode="numeric" data-sc="${f.id}|h" value="${hv}" maxlength="2" aria-label="${f.h} score versus ${f.a}"><span class="dash">-</span><input inputmode="numeric" data-sc="${f.id}|a" value="${av}" maxlength="2" aria-label="${f.a} score versus ${f.h}">`;
+ gfix.forEach(f=>{const fs=fixtureStatus(f.id),ro=!!fs.real;
+  // Final official results are read-only (section 14.5); their inputs are disabled.
+  const sc=ro?fs.real:fs.shown,hv=sc?sc[0]:'',av=sc?sc[1]:'';
+  h+=`<div class="fx ${fs.state}${(!ro&&fs.mine)?' mine':''}"><span class="hn">${f.h}</span><span class="sc">`;
+  h+=`<input inputmode="numeric" data-sc="${f.id}|h" value="${hv}" maxlength="2"${ro?' disabled':''} aria-label="${f.h} score versus ${f.a}"><span class="dash">-</span><input inputmode="numeric" data-sc="${f.id}|a" value="${av}" maxlength="2"${ro?' disabled':''} aria-label="${f.a} score versus ${f.h}">`;
   h+=`</span><span class="an">${f.a}<span class="badges">${fixtureChip(fs)}`;
-  if(fs.mine)h+=`<button class="revert" data-revert="${f.id}" aria-label="Revert this score">&#8635; Revert</button>`;
+  if(!ro&&fs.mine)h+=`<button class="revert" data-revert="${f.id}" aria-label="Revert this score">&#8635; Revert</button>`;
   h+=`</span></span></div>`;});
  h+=`</div>`;
  return h;
@@ -484,23 +437,14 @@ function groupCardInnerHTML(g,headerTag,relevant){
 function renderStandings(){
  const root=sb('groups');root.innerHTML='';
  sb('resetScores').hidden=Object.keys(results).length===0;
- // Relevance order from the core: matchup groups + route + third-place, then rest collapsed.
- const rel=(S.A===S.B)?{order:GL.slice(),relevantCount:0}:relevantGroups(S.A,S.B);
- rel.order.forEach((g,i)=>{
-  const relevant=i<rel.relevantCount;
-  let card;
-  if(relevant){
-   card=document.createElement('div');card.className='gcard relevant';
-   card.innerHTML=groupCardInnerHTML(g,'h3',true);
-  }else{
-   // Remaining groups collapse by default (section 14.2).
-   card=document.createElement('details');card.className='gcard collapsible';
-   card.innerHTML=groupCardInnerHTML(g,'summary',false);
-  }
+ // All groups shown alphabetically (A..L), full table, expanded (section 14.2/14.3).
+ GL.slice().sort().forEach(g=>{
+  const card=document.createElement('div');card.className='gcard';
+  card.innerHTML=groupCardInnerHTML(g);
   root.appendChild(card);});
 }
 // Re-render the matchup-side views so a Forecast edit stays consistent there.
-function renderActiveMatchup(){renderVerdictStrip();renderHero();renderScenarios();renderAnchor();}
+function renderActiveMatchup(){renderVerdictStrip();renderHero();renderScenarios();}
 function renderAll(){renderPicker();renderActiveMatchup();renderStandings();}
 
 // ---- events ----
@@ -513,25 +457,23 @@ function setTab(t){S.tab=t;[...document.querySelectorAll('.tabs button')].forEac
  sb('vstrip').classList.toggle('show',t==='matchups');}
 document.addEventListener('click',e=>{
  const tb=e.target.closest('[data-tab]');if(tb){setTab(tb.dataset.tab);return;}
- const mu=e.target.closest('[data-mu]');if(mu){const[a,b]=mu.dataset.mu.split('|');S.A=a;S.B=b;setTab('matchups');window.scrollTo({top:0,behavior:'smooth'});renderAll();return;}
  const rv=e.target.closest('[data-revert]');if(rv){delete results[rv.dataset.revert];renderStandings();renderActiveMatchup();return;}
- const stx=e.target.closest('[data-stats]');if(stx){const card=stx.closest('.gcard');const on=card.classList.toggle('expanded');
-  stx.setAttribute('aria-expanded',on?'true':'false');stx.textContent=on?'Hide W D L GF GA':'Show W D L GF GA';return;}
 });
 document.addEventListener('input',e=>{const inp=e.target.closest('[data-sc]');if(!inp)return;
- const[fid,side]=inp.dataset.sc.split('|');const v=inp.value.replace(/[^0-9]/g,'').slice(0,2);if(v!==inp.value)inp.value=v;
+ const[fid,side]=inp.dataset.sc.split('|');
+ if(official(fid))return;  // final official results are read-only (section 14.5)
+ const v=inp.value.replace(/[^0-9]/g,'').slice(0,2);if(v!==inp.value)inp.value=v;
  const base=results[fid]?results[fid].slice():(committed(fid)?committed(fid).slice():[null,null]);
  base[side==='h'?0:1]=v===''?null:+v;
  const real=current(fid);
  if(base[0]==null&&base[1]==null)delete results[fid];
  else{const filled=[base[0]==null?0:base[0],base[1]==null?0:base[1]];
   if(real&&real[0]===filled[0]&&real[1]===filled[1])delete results[fid];else results[fid]=filled;}
- const key=inp.dataset.sc,card=inp.closest('.gcard'),wasExpanded=card&&card.classList.contains('expanded'),wasOpen=card&&card.tagName==='DETAILS'&&card.open;
+ const key=inp.dataset.sc;
  renderStandings();renderActiveMatchup();
- // Restore the edited card's expand/open state and refocus the input.
+ // Refocus the re-rendered input so typing stays uninterrupted.
  const again=document.querySelector('[data-sc="'+key+'"]');
- if(again){const nc=again.closest('.gcard');if(nc){if(wasExpanded)nc.classList.add('expanded');if(wasOpen&&nc.tagName==='DETAILS')nc.open=true;}
-  again.focus();try{again.setSelectionRange(again.value.length,again.value.length);}catch(_){}}});
+ if(again){again.focus();try{again.setSelectionRange(again.value.length,again.value.length);}catch(_){}}});
 sb('resetScores').onclick=()=>{Object.keys(results).forEach(k=>delete results[k]);renderStandings();renderActiveMatchup();};
 
 // ---- live data ----
