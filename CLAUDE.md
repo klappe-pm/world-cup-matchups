@@ -36,6 +36,9 @@ Endpoint contract and the seven-team name map: `docs/references/api-integration.
 
 - Standings count finished games plus the user's what-if edits only; a live
   in-progress score shows in the fixture row but is not half-counted.
+- The feed pre-fills future games as `finished` with a score; a game is not
+  counted or shown until its scheduled kickoff has passed (`setLiveScores`
+  gates on `Date.now()` vs the fixture's `local_date`).
 - The clinched-winner lock follows real results only — never what-if edits or
   live games.
 - Do not attribute Claude Code as an author in commits or PRs (owner preference).

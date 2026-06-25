@@ -66,6 +66,45 @@ t.test('parseGroupGames flags live in-progress games', () => {
   }] })[0];
   t.ok(p.live === true && p.finished === false, 'live flagged');
 });
+// The feed pre-fills future games as finished=TRUE with a score; gate on kickoff.
+const FUTURE_FINAL = { games: [{
+  type: 'group', group: 'Z', matchday: '3',
+  home_team_name_en: 'X', away_team_name_en: 'Y',
+  home_score: '2', away_score: '1', finished: 'TRUE', time_elapsed: 'finished',
+  local_date: '06/25/2026 16:00'
+}] };
+t.test('parseGroupGames does NOT count a feed-final game before its kickoff', () => {
+  const now = WC.toEpoch('06/25/2026 15:15'); // 45 min before kickoff
+  const p = WC.parseGroupGames(FUTURE_FINAL, now)[0];
+  t.ok(p.finished === false && p.live === false, 'not finished/live before kickoff');
+  t.ok(p.hs === null && p.as === null, 'pre-filled score is hidden before kickoff');
+});
+t.test('parseGroupGames counts a feed-final game once kickoff has passed', () => {
+  const now = WC.toEpoch('06/25/2026 18:30'); // after kickoff
+  const p = WC.parseGroupGames(FUTURE_FINAL, now)[0];
+  t.ok(p.finished === true, 'finished after kickoff');
+  t.ok(p.hs === 2 && p.as === 1, 'score shown after kickoff');
+});
+t.test('parseGroupGames without a clock trusts the feed (no gate)', () => {
+  const p = WC.parseGroupGames(FUTURE_FINAL)[0];
+  t.ok(p.finished === true && p.hs === 2, 'now omitted => feed trusted');
+});
+t.test('setLiveScores gate keeps a future game out of the standings table', () => {
+  const M = WC.createModel(loadStruct());
+  // Pick a fixture not yet played in the snapshot, then synthesize a
+  // future-dated finished feed game for it (the feed pre-fills results).
+  const f = M.FIX.find(x => !x.played);
+  t.ok(f, 'an unplayed snapshot fixture exists');
+  const feed = { games: [{
+    type: 'group', group: f.g, matchday: String(f.md),
+    home_team_name_en: f.h, away_team_name_en: f.a,
+    home_score: '5', away_score: '0', finished: 'TRUE', time_elapsed: 'finished',
+    local_date: '12/31/2026 20:00'
+  }] };
+  M.setLiveScores(feed, WC.toEpoch('06/25/2026 12:00')); // long before kickoff
+  t.ok(M.fixtureStatus(f.id).state === 'upcoming', 'future feed-final shows as upcoming');
+  t.ok(M.official(f.id) === null, 'future result not counted as official');
+});
 
 // ---- indexLiveByFixture orientation ----
 t.test('indexLiveByFixture orients scores to the fixture home/away', () => {
