@@ -42,6 +42,18 @@
     return yyyy + '-' + String(mm).padStart(2, '0') + '-' + String(dd).padStart(2, '0');
   }
 
+  // Parse an API local_date ("MM/DD/YYYY HH:mm") to a local epoch in ms. Null-safe.
+  // Used to tell whether a kickoff has actually happened yet.
+  function toEpoch(localDate) {
+    if (!localDate) return null;
+    var parts = String(localDate).split(' ');
+    var mdy = parts[0].split('/');
+    var hm = (parts[1] || '00:00').split(':');
+    var mm = Number(mdy[0]), dd = Number(mdy[1]), yyyy = Number(mdy[2]);
+    if (!mm || !dd || !yyyy) return null;
+    return new Date(yyyy, mm - 1, dd, Number(hm[0]) || 0, Number(hm[1]) || 0, 0, 0).getTime();
+  }
+
   // Index ALL games (group + knockout) by Number(id) -> schedule entry.
   function buildScheduleByMatchId(gamesPayload) {
     var map = {};
@@ -68,23 +80,32 @@
   }
 
   // Parse a /get/games payload into normalized group-stage rows.
-  // Each row: {group, md, home, away, hs, as, finished, live}
-  function parseGroupGames(payload) {
+  // Each row: {group, md, home, away, hs, as, dateISO, finished, live}
+  //
+  // The feed pre-fills simulated results for the whole tournament, so a game
+  // can arrive flagged finished=TRUE (with a score) before its scheduled
+  // kickoff. Pass `now` (epoch ms) to gate on the kickoff: a game cannot be
+  // live or final, and its score is hidden, until it has actually started.
+  // `now == null` disables the gate (offline parsing and tests trust the feed).
+  function parseGroupGames(payload, now) {
     var games = (payload && payload.games) || [];
     var out = [];
     for (var i = 0; i < games.length; i++) {
       var x = games[i];
       if (String(x.type || '').toLowerCase() !== 'group') continue;
       var te = String(x.time_elapsed || '').toLowerCase();
-      var finished = String(x.finished).toUpperCase() === 'TRUE' || te === 'finished' || te === 'ft';
-      var live = !finished && te !== 'notstarted' && te !== '';
+      var kickoff = toEpoch(x.local_date);
+      var started = (now == null || kickoff == null) ? true : (now >= kickoff);
+      var feedFinished = String(x.finished).toUpperCase() === 'TRUE' || te === 'finished' || te === 'ft';
+      var finished = started && feedFinished;
+      var live = started && !finished && te !== 'notstarted' && te !== '';
       out.push({
         group: x.group,
         md: Number(x.matchday),
         home: normalizeName(x.home_team_name_en),
         away: normalizeName(x.away_team_name_en),
-        hs: toScore(x.home_score),
-        as: toScore(x.away_score),
+        hs: started ? toScore(x.home_score) : null,
+        as: started ? toScore(x.away_score) : null,
         dateISO: toISODate(x.local_date),
         finished: finished,
         live: live
@@ -343,7 +364,7 @@
       RN: RN, RIDX: RIDX, RNAME: RNAME, RSHORT: RSHORT, RCLS: RCLS, ORD: ORD,
       rank: rank, groupOf: groupOf, teams: teams,
       state: state,
-      setLiveScores: function (gamesPayload) { state.live = indexLiveByFixture(FIX, parseGroupGames(gamesPayload)); return Object.keys(state.live).length; },
+      setLiveScores: function (gamesPayload, now) { state.live = indexLiveByFixture(FIX, parseGroupGames(gamesPayload, now)); return Object.keys(state.live).length; },
       official: official, current: current, committed: committed,
       standings: standings, clinchedWinner: clinchedWinner,
       scenarios: scenarios, earliestAny: earliestAny,
@@ -361,6 +382,7 @@
     normalizeName: normalizeName,
     normalizeRound: normalizeRound,
     toISODate: toISODate,
+    toEpoch: toEpoch,
     buildScheduleByMatchId: buildScheduleByMatchId,
     parseGroupGames: parseGroupGames,
     indexLiveByFixture: indexLiveByFixture,

@@ -55,6 +55,12 @@ live scores onto it:
 - `committed()` = the user's what-if override, else the final result. This is
   what the standings table counts, so a live in-progress game is shown in the
   fixture row but not half-counted (matching the official feed's table).
+- Kickoff gate: the feed pre-fills the whole tournament with simulated results,
+  so a game can arrive `finished="TRUE"` with a score before its scheduled
+  kickoff. `parseGroupGames(payload, now)` (called via `setLiveScores(g,
+  Date.now())`) ignores the `finished`/`live` flags and hides the score until
+  `now >= local_date` kickoff, so an unplayed game is never counted or shown.
+  Passing no `now` disables the gate (offline parsing and tests trust the feed).
 
 ## Fallback
 

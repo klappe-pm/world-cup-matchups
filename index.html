@@ -484,7 +484,7 @@ function setStatus(loading){const el=sb('asof');
   :'<span class="dstatus"><span class="dot off"></span>Offline &middot; showing saved snapshot (through June 22, 2026)</span>';}
 function refresh(){fetch(WC.API_BASE+'/get/games',{cache:'no-store'})
  .then(r=>r.ok?r.json():Promise.reject(new Error('HTTP '+r.status)))
- .then(g=>{M.setLiveScores(g);M.setSchedule(g);liveOK=true;lastStamp=new Date().toLocaleTimeString();renderAll();setStatus();})
+ .then(g=>{M.setLiveScores(g,Date.now());M.setSchedule(g);liveOK=true;lastStamp=new Date().toLocaleTimeString();renderAll();setStatus();})
  .catch(()=>{liveOK=false;setStatus();});}
 setStatus(true);renderAll();refresh();setInterval(refresh,30000);
 </script>
